@@ -158,7 +158,7 @@
 }
 
 .image-inserter-container .container .scroll-area .pagination .btn {
-	cursor: pointer;
+	cursor: default;
 }
 
 /* Loading Animation */

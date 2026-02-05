@@ -808,6 +808,10 @@ body:not(.is-mobile).hide-tab-close-button-reveal .workspace-tab-header-inner-cl
 	display: none;
 }
 
+.hide-button-bookmarked .view-header .clickable-icon.view-action:has(.svg-icon.lucide-bookmark) {
+	display: none;
+}
+
 .hide-button-search-settings .search-row .clickable-icon:has(.svg-icon.lucide-sliders-horizontal) {
 	display: none;
 }

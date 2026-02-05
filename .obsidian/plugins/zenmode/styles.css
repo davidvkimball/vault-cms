@@ -15,6 +15,7 @@
 .zenmode-hide-status-bar .status-bar {
 	display: none !important;
 }
+
 /* Hide sidebar buttons */
 .zenmode-active .sidebar-toggle-button.mod-right,
 .zenmode-active .sidebar-toggle-button.mod-left,
@@ -101,6 +102,12 @@ body:not(.is-mobile).zenmode-active .titlebar * {
 	right: 10px;
 	z-index: 1000;
 	overflow: visible;
+	display: none;
+}
+
+/* Move button up on desktop for stability and visibility above status bar */
+.zenmode-button.zenmode-button-moved-up {
+	bottom: 50px;
 }
 
 /* Account for mobile navigation bar and safe areas */
@@ -119,7 +126,6 @@ body:not(.is-mobile) .zenmode-button-auto-hide {
 	padding: 30px;
 	margin: -30px;
 	/* Ensure the container itself is the hover target */
-	cursor: pointer;
 }
 
 /* Reveal button on hover - works when hovering anywhere in the expanded area */
@@ -153,10 +159,12 @@ body:not(.is-mobile)
 		/* Start with a slightly brighter shadow for a subtle pulse effect */
 		box-shadow: 0 2px 12px var(--background-modifier-border);
 	}
+
 	50% {
 		/* Maintain the standard shadow for the first half of the animation */
 		box-shadow: 0 2px 8px var(--background-modifier-border);
 	}
+
 	100% {
 		/* Fade out completely */
 		box-shadow: none;
@@ -195,4 +203,14 @@ body:not(.is-mobile) .zenmode-button-auto-hide.zenmode-button-fade-out button {
 	display: block !important;
 	width: 100% !important;
 	flex: 1 1 100% !important;
+}
+
+/* Hide linked mentions - conditional based on hideLinkedMentions setting */
+.zenmode-hide-linked-mentions .embedded-backlinks {
+	display: none !important;
+}
+
+/* Hide scroll bars - conditional based on hideScrollBar setting */
+.zenmode-hide-scroll-bar ::-webkit-scrollbar {
+	display: none !important;
 }
