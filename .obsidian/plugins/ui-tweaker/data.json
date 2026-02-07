@@ -173,8 +173,76 @@
   "nativeExplorerButtonIcons": {},
   "propertyIconItems": [
     {
+      "id": "title",
+      "icon": "lucide-type"
+    },
+    {
+      "id": "targetkeyword",
+      "icon": "lucide-search-check"
+    },
+    {
+      "id": "status",
+      "icon": "lucide-alert-octagon"
+    },
+    {
+      "id": "description",
+      "icon": "lucide-text-initial"
+    },
+    {
+      "id": "featured",
+      "icon": "lucide-star"
+    },
+    {
+      "id": "hidecoverimage",
+      "icon": "lucide-image-off"
+    },
+    {
+      "id": "hidetoc",
+      "icon": "lucide-equal-not"
+    },
+    {
+      "id": "image",
+      "icon": "lucide-image"
+    },
+    {
+      "id": "imagealt",
+      "icon": "lucide-image-plus"
+    },
+    {
+      "id": "imageog",
+      "icon": "lucide-images"
+    },
+    {
+      "id": "lastmodified",
+      "icon": "lucide-history"
+    },
+    {
+      "id": "noindex",
+      "icon": "lucide-list-x"
+    },
+    {
+      "id": "projecturl",
+      "icon": "lucide-mouse-pointer-square-dashed"
+    },
+    {
+      "id": "repositoryurl",
+      "icon": "lucide-github"
+    },
+    {
+      "id": "version",
+      "icon": "lucide-tag"
+    },
+    {
+      "id": "category",
+      "icon": "lucide-list"
+    },
+    {
       "id": "cssclasses",
       "icon": "lucide-palette"
+    },
+    {
+      "id": "categories",
+      "icon": "lucide-list-x"
     }
   ],
   "minimalPropertyIcons": false,
