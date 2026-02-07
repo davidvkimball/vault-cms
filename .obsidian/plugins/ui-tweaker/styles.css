@@ -243,13 +243,13 @@ body:not(.is-mobile):not(.mod-macos).auto-collapse-ribbon .workspace-ribbon.side
 	transition: width 0.1s ease;
 }
 
-body:not(.is-mobile):not(.mod-macos).auto-collapse-ribbon .workspace-ribbon.side-dock-ribbon.mod-left .sidebar-toggle-button.mod-left > .clickable-icon {
+body:not(.is-mobile):not(.mod-macos).auto-collapse-ribbon .workspace-ribbon.side-dock-ribbon.mod-left .sidebar-toggle-button.mod-left>.clickable-icon {
 	width: 0px;
 	padding: 3px;
 	transition: width 0.5s ease;
 }
 
-body:not(.is-mobile):not(.mod-macos).auto-collapse-ribbon .workspace-ribbon.side-dock-ribbon.mod-left:hover .sidebar-toggle-button.mod-left > .clickable-icon {
+body:not(.is-mobile):not(.mod-macos).auto-collapse-ribbon .workspace-ribbon.side-dock-ribbon.mod-left:hover .sidebar-toggle-button.mod-left>.clickable-icon {
 	width: 33.333px;
 	transition: width 0.1s ease;
 }
@@ -319,8 +319,8 @@ body:not(.is-mobile):not(.hider-vault).auto-hide-vault-switcher-reveal .mod-side
 	transition: var(--anim-duration-moderate) var(--anim-motion-baseline);
 }
 
-body:not(.is-mobile):not(.hider-vault).auto-hide-vault-switcher-reveal .mod-sidedock.mod-left-split .workspace-leaf-content > .node-insert-event,
-body:not(.is-mobile):not(.hider-vault).auto-hide-vault-switcher-reveal .mod-sidedock.mod-left-split .workspace-leaf-content > .view-content {
+body:not(.is-mobile):not(.hider-vault).auto-hide-vault-switcher-reveal .mod-sidedock.mod-left-split .workspace-leaf-content>.node-insert-event,
+body:not(.is-mobile):not(.hider-vault).auto-hide-vault-switcher-reveal .mod-sidedock.mod-left-split .workspace-leaf-content>.view-content {
 	padding-bottom: 64px;
 }
 
@@ -398,32 +398,24 @@ body.hider-tabs .mod-root .workspace-tabs .workspace-tab-header-container {
    ======================================== */
 
 /* Base transition properties */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .mod-root
-  .workspace-tabs:not(.mod-stacked)
-  .workspace-tab-header-container {
-  max-height: 3em;
-  opacity: 1;
-  transition:
-    opacity 0.3s ease,
-    max-height 0.3s ease;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container {
+	max-height: 3em;
+	opacity: 1;
+	transition:
+		opacity 0.3s ease,
+		max-height 0.3s ease;
 }
 
 /* Only apply overflow: hidden when there's actually a single tab */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .mod-root
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
-  .workspace-tab-header-container {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .mod-root .workspace-tabs:not(.mod-stacked):not( :has(.workspace-tab-header:nth-of-type(2))) .workspace-tab-header-container {
+	max-height: 0;
+	opacity: 0;
+	overflow: hidden;
 }
 
 /* OS-specific offsets for view-actions and view-header-left */
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows {
-	--view-actions-right-offset: 130px; 
+	--view-actions-right-offset: 130px;
 }
 
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos {
@@ -437,101 +429,67 @@ body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .view-header .view-header
 }
 
 /* Windows: Offset view-actions when right sidebar is collapsed and it's a single tab pane */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header
-  .view-actions {
-  padding-right: var(--view-actions-right-offset) !important;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header .view-actions {
+	padding-right: var(--view-actions-right-offset) !important;
 }
 
 /* macOS: Offset view-header-left when left sidebar is collapsed and it's a single tab pane */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header
-  .view-header-left {
-  padding-left: var(--view-header-left-offset) !important;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header .view-header-left {
+	padding-left: var(--view-header-left-offset) !important;
 }
 
 /* Make view-header draggable when tab bar is hidden (single tab) */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header {
-  position: relative;
-  -webkit-app-region: drag !important;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header {
+	position: relative;
+	-webkit-app-region: drag !important;
 }
 
 /* Windows: Exclude right side from dragging when right sidebar is collapsed */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header {
-  -webkit-app-region: no-drag !important;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header {
+	-webkit-app-region: no-drag !important;
 }
 
 /* Create draggable pseudo-element for Windows */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: var(--view-actions-right-offset);
-  height: 100%;
-  -webkit-app-region: drag !important;
-  z-index: 0;
-  pointer-events: auto;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: var(--view-actions-right-offset);
+	height: 100%;
+	-webkit-app-region: drag !important;
+	z-index: 0;
+	pointer-events: auto;
 }
 
 /* macOS: Exclude left side from dragging when left sidebar is collapsed */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header {
-  -webkit-app-region: no-drag !important;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header {
+	-webkit-app-region: no-drag !important;
 }
 
 /* Create draggable pseudo-element for macOS */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: var(--view-header-left-offset);
-  right: 0;
-  height: 100%;
-  -webkit-app-region: drag !important;
-  z-index: 0;
-  pointer-events: auto;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: var(--view-header-left-offset);
+	right: 0;
+	height: 100%;
+	-webkit-app-region: drag !important;
+	z-index: 0;
+	pointer-events: auto;
 }
 
 /* Make interactive elements in view-header non-draggable and above pseudo-element */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header
-  .view-action,
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header
-  .view-header-title,
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header
-  button,
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header
-  .clickable-icon,
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header
-  .view-header-left,
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
-  .view-header
-  .view-actions {
-  position: relative;
-  z-index: 1;
-  -webkit-app-region: no-drag !important;
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header .view-action,
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header .view-header-title,
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header button,
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header .clickable-icon,
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header .view-header-left,
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2))) .view-header .view-actions {
+	position: relative;
+	z-index: 1;
+	-webkit-app-region: no-drag !important;
 }
 
 /* Hide view-header when tabs are hidden (matches original Hider plugin behavior) */
@@ -871,7 +829,7 @@ body.hide-mobile-title .minimal-tab-title-visible .view-header-title-container {
 .hide-mobile-sync-icon.is-mobile .workspace-drawer.mod-right .workspace-drawer-header .sync-status-icon:not(.ui-tweaker-sync-replacement),
 .hide-mobile-sync-icon.is-mobile .workspace-drawer.mod-right .workspace-drawer-header .workspace-drawer-header-icon.sync-status-icon:not(.ui-tweaker-sync-replacement),
 .hide-mobile-sync-icon.is-mobile .workspace-drawer.mod-right .workspace-drawer-header .clickable-icon.sync-status-icon:not(.ui-tweaker-sync-replacement),
-.hide-mobile-sync-icon.is-mobile .status-bar > .plugin-sync:not(.ui-tweaker-sync-replacement) {
+.hide-mobile-sync-icon.is-mobile .status-bar>.plugin-sync:not(.ui-tweaker-sync-replacement) {
 	display: none !important;
 }
 
@@ -897,47 +855,149 @@ body.hide-mobile-title .minimal-tab-title-visible .view-header-title-container {
    Mobile Navigation Menu Ordering
    ======================================== */
 
-.order-navbar-button-nth-child-1-1 .mobile-navbar-action-back { order: 1; }
-.order-navbar-button-nth-child-1-2 .mobile-navbar-action-back { order: 2; }
-.order-navbar-button-nth-child-1-3 .mobile-navbar-action-back { order: 3; }
-.order-navbar-button-nth-child-1-4 .mobile-navbar-action-back { order: 4; }
-.order-navbar-button-nth-child-1-5 .mobile-navbar-action-back { order: 5; }
-.order-navbar-button-nth-child-1-6 .mobile-navbar-action-back { order: 6; }
+.order-navbar-button-nth-child-1-1 .mobile-navbar-action-back {
+	order: 1;
+}
 
-.order-navbar-button-nth-child-2-1 .mobile-navbar-action-forward { order: 1; }
-.order-navbar-button-nth-child-2-2 .mobile-navbar-action-forward { order: 2; }
-.order-navbar-button-nth-child-2-3 .mobile-navbar-action-forward { order: 3; }
-.order-navbar-button-nth-child-2-4 .mobile-navbar-action-forward { order: 4; }
-.order-navbar-button-nth-child-2-5 .mobile-navbar-action-forward { order: 5; }
-.order-navbar-button-nth-child-2-6 .mobile-navbar-action-forward { order: 6; }
+.order-navbar-button-nth-child-1-2 .mobile-navbar-action-back {
+	order: 2;
+}
 
-.order-navbar-button-nth-child-3-1 .mobile-navbar-action-quick-switcher { order: 1; }
-.order-navbar-button-nth-child-3-2 .mobile-navbar-action-quick-switcher { order: 2; }
-.order-navbar-button-nth-child-3-3 .mobile-navbar-action-quick-switcher { order: 3; }
-.order-navbar-button-nth-child-3-4 .mobile-navbar-action-quick-switcher { order: 4; }
-.order-navbar-button-nth-child-3-5 .mobile-navbar-action-quick-switcher { order: 5; }
-.order-navbar-button-nth-child-3-6 .mobile-navbar-action-quick-switcher { order: 6; }
+.order-navbar-button-nth-child-1-3 .mobile-navbar-action-back {
+	order: 3;
+}
 
-.order-navbar-button-nth-child-4-1 .mobile-navbar-action-new-tab { order: 1; }
-.order-navbar-button-nth-child-4-2 .mobile-navbar-action-new-tab { order: 2; }
-.order-navbar-button-nth-child-4-3 .mobile-navbar-action-new-tab { order: 3; }
-.order-navbar-button-nth-child-4-4 .mobile-navbar-action-new-tab { order: 4; }
-.order-navbar-button-nth-child-4-5 .mobile-navbar-action-new-tab { order: 5; }
-.order-navbar-button-nth-child-4-6 .mobile-navbar-action-new-tab { order: 6; }
+.order-navbar-button-nth-child-1-4 .mobile-navbar-action-back {
+	order: 4;
+}
 
-.order-navbar-button-nth-child-5-1 .mobile-navbar-action-tabs { order: 1; }
-.order-navbar-button-nth-child-5-2 .mobile-navbar-action-tabs { order: 2; }
-.order-navbar-button-nth-child-5-3 .mobile-navbar-action-tabs { order: 3; }
-.order-navbar-button-nth-child-5-4 .mobile-navbar-action-tabs { order: 4; }
-.order-navbar-button-nth-child-5-5 .mobile-navbar-action-tabs { order: 5; }
-.order-navbar-button-nth-child-5-6 .mobile-navbar-action-tabs { order: 6; }
+.order-navbar-button-nth-child-1-5 .mobile-navbar-action-back {
+	order: 5;
+}
 
-.order-navbar-button-nth-child-6-1 .mobile-navbar-action-menu { order: 1; }
-.order-navbar-button-nth-child-6-2 .mobile-navbar-action-menu { order: 2; }
-.order-navbar-button-nth-child-6-3 .mobile-navbar-action-menu { order: 3; }
-.order-navbar-button-nth-child-6-4 .mobile-navbar-action-menu { order: 4; }
-.order-navbar-button-nth-child-6-5 .mobile-navbar-action-menu { order: 5; }
-.order-navbar-button-nth-child-6-6 .mobile-navbar-action-menu { order: 6; }
+.order-navbar-button-nth-child-1-6 .mobile-navbar-action-back {
+	order: 6;
+}
+
+.order-navbar-button-nth-child-2-1 .mobile-navbar-action-forward {
+	order: 1;
+}
+
+.order-navbar-button-nth-child-2-2 .mobile-navbar-action-forward {
+	order: 2;
+}
+
+.order-navbar-button-nth-child-2-3 .mobile-navbar-action-forward {
+	order: 3;
+}
+
+.order-navbar-button-nth-child-2-4 .mobile-navbar-action-forward {
+	order: 4;
+}
+
+.order-navbar-button-nth-child-2-5 .mobile-navbar-action-forward {
+	order: 5;
+}
+
+.order-navbar-button-nth-child-2-6 .mobile-navbar-action-forward {
+	order: 6;
+}
+
+.order-navbar-button-nth-child-3-1 .mobile-navbar-action-quick-switcher {
+	order: 1;
+}
+
+.order-navbar-button-nth-child-3-2 .mobile-navbar-action-quick-switcher {
+	order: 2;
+}
+
+.order-navbar-button-nth-child-3-3 .mobile-navbar-action-quick-switcher {
+	order: 3;
+}
+
+.order-navbar-button-nth-child-3-4 .mobile-navbar-action-quick-switcher {
+	order: 4;
+}
+
+.order-navbar-button-nth-child-3-5 .mobile-navbar-action-quick-switcher {
+	order: 5;
+}
+
+.order-navbar-button-nth-child-3-6 .mobile-navbar-action-quick-switcher {
+	order: 6;
+}
+
+.order-navbar-button-nth-child-4-1 .mobile-navbar-action-new-tab {
+	order: 1;
+}
+
+.order-navbar-button-nth-child-4-2 .mobile-navbar-action-new-tab {
+	order: 2;
+}
+
+.order-navbar-button-nth-child-4-3 .mobile-navbar-action-new-tab {
+	order: 3;
+}
+
+.order-navbar-button-nth-child-4-4 .mobile-navbar-action-new-tab {
+	order: 4;
+}
+
+.order-navbar-button-nth-child-4-5 .mobile-navbar-action-new-tab {
+	order: 5;
+}
+
+.order-navbar-button-nth-child-4-6 .mobile-navbar-action-new-tab {
+	order: 6;
+}
+
+.order-navbar-button-nth-child-5-1 .mobile-navbar-action-tabs {
+	order: 1;
+}
+
+.order-navbar-button-nth-child-5-2 .mobile-navbar-action-tabs {
+	order: 2;
+}
+
+.order-navbar-button-nth-child-5-3 .mobile-navbar-action-tabs {
+	order: 3;
+}
+
+.order-navbar-button-nth-child-5-4 .mobile-navbar-action-tabs {
+	order: 4;
+}
+
+.order-navbar-button-nth-child-5-5 .mobile-navbar-action-tabs {
+	order: 5;
+}
+
+.order-navbar-button-nth-child-5-6 .mobile-navbar-action-tabs {
+	order: 6;
+}
+
+.order-navbar-button-nth-child-6-1 .mobile-navbar-action-menu {
+	order: 1;
+}
+
+.order-navbar-button-nth-child-6-2 .mobile-navbar-action-menu {
+	order: 2;
+}
+
+.order-navbar-button-nth-child-6-3 .mobile-navbar-action-menu {
+	order: 3;
+}
+
+.order-navbar-button-nth-child-6-4 .mobile-navbar-action-menu {
+	order: 4;
+}
+
+.order-navbar-button-nth-child-6-5 .mobile-navbar-action-menu {
+	order: 5;
+}
+
+.order-navbar-button-nth-child-6-6 .mobile-navbar-action-menu {
+	order: 6;
+}
 
 /* ========================================
    Window Dragging (Windows)
@@ -945,9 +1005,12 @@ body.hide-mobile-title .minimal-tab-title-visible .view-header-title-container {
 
 /* Only apply when tab bar is hidden */
 body:not(.is-mobile).hider-tabs-windows {
-	--drag-bump: 12px;          /* Increased bump for notes and find/replace */
-	--controls-offset: 48px;    /* graph/canvas controls offset */
-	--toolbar-right-offset: 130px; /* padding for base controls */
+	--drag-bump: 12px;
+	/* Increased bump for notes and find/replace */
+	--controls-offset: 48px;
+	/* graph/canvas controls offset */
+	--toolbar-right-offset: 130px;
+	/* padding for base controls */
 }
 
 /* Draggable strip (leave OS window buttons untouched) */
@@ -967,24 +1030,29 @@ body:not(.is-mobile).hider-tabs-windows .inline-title {
 	-webkit-app-region: no-drag !important;
 	z-index: 11 !important;
 	position: relative !important;
-	margin-top: 0 !important; /* reset by default */
+	margin-top: 0 !important;
+	/* reset by default */
 }
 
 /* Only apply bump when tab bar is hidden */
 body:not(.is-mobile).hider-tabs-windows .workspace-leaf-content[data-type="markdown"] .inline-title {
 	margin-top: var(--drag-bump) !important;
 }
+
 body:not(.is-mobile).hider-tabs-windows .workspace-leaf-content[data-type="markdown"] .document-search-container {
-	margin-top: var(--drag-bump) !important; /* Match note content offset */
-	z-index: 12 !important; /* Above titlebar and inline-title */
+	margin-top: var(--drag-bump) !important;
+	/* Match note content offset */
+	z-index: 12 !important;
+	/* Above titlebar and inline-title */
 }
 
 /* Graph & Canvas controls stay clear of window buttons (only when right sidebar is closed) */
-body:not(.is-mobile).hider-tabs-windows .workspace:not(.is-right-sidedock-open) .graph-controls { 
-	top: var(--controls-offset) !important; 
+body:not(.is-mobile).hider-tabs-windows .workspace:not(.is-right-sidedock-open) .graph-controls {
+	top: var(--controls-offset) !important;
 }
-body:not(.is-mobile).hider-tabs-windows .workspace:not(.is-right-sidedock-open) .canvas-controls { 
-	top: var(--controls-offset) !important; 
+
+body:not(.is-mobile).hider-tabs-windows .workspace:not(.is-right-sidedock-open) .canvas-controls {
+	top: var(--controls-offset) !important;
 }
 
 /* Push entire toolbar to the right of minimize/maximize/close (only when right sidebar is closed) */
@@ -998,8 +1066,10 @@ body:not(.is-mobile).hider-tabs-windows .workspace:not(.is-right-sidedock-open) 
 
 /* Only apply when tab bar is hidden */
 body:not(.is-mobile).hider-tabs-macos {
-	--drag-bump: 8px;           /* bump for notes */
-	--toolbar-left-offset: 100px; /* padding for base controls on left */
+	--drag-bump: 8px;
+	/* bump for notes */
+	--toolbar-left-offset: 100px;
+	/* padding for base controls on left */
 }
 
 /* Draggable strip (leave OS window buttons untouched) */
@@ -1019,16 +1089,20 @@ body:not(.is-mobile).hider-tabs-macos .inline-title {
 	-webkit-app-region: no-drag !important;
 	z-index: 11 !important;
 	position: relative !important;
-	margin-top: 0 !important; /* reset by default */
+	margin-top: 0 !important;
+	/* reset by default */
 }
 
 /* Only apply bump when tab bar is hidden */
 body:not(.is-mobile).hider-tabs-macos .workspace-leaf-content[data-type="markdown"] .inline-title {
 	margin-top: var(--drag-bump) !important;
 }
+
 body:not(.is-mobile).hider-tabs-macos .workspace-leaf-content[data-type="markdown"] .document-search-container {
-	margin-top: var(--drag-bump) !important; /* Match note content offset */
-	z-index: 12 !important; /* Above titlebar and inline-title */
+	margin-top: var(--drag-bump) !important;
+	/* Match note content offset */
+	z-index: 12 !important;
+	/* Above titlebar and inline-title */
 }
 
 /* Push entire toolbar to the right of Mac window buttons (only when left sidebar is closed) */
@@ -1042,7 +1116,8 @@ body:not(.is-mobile).hider-tabs-macos .workspace:not(.is-left-sidedock-open) .ba
 
 /* Only apply when tab bar is hidden */
 body:not(.is-mobile).hider-tabs-neutral {
-	--drag-bump: 8px; /* bump for notes */
+	--drag-bump: 8px;
+	/* bump for notes */
 }
 
 /* Draggable strip (leave OS window buttons untouched) */
@@ -1062,16 +1137,20 @@ body:not(.is-mobile).hider-tabs-neutral .inline-title {
 	-webkit-app-region: no-drag !important;
 	z-index: 11 !important;
 	position: relative !important;
-	margin-top: 0 !important; /* reset by default */
+	margin-top: 0 !important;
+	/* reset by default */
 }
 
 /* Only apply bump when tab bar is hidden */
 body:not(.is-mobile).hider-tabs-neutral .workspace-leaf-content[data-type="markdown"] .inline-title {
 	margin-top: var(--drag-bump) !important;
 }
+
 body:not(.is-mobile).hider-tabs-neutral .workspace-leaf-content[data-type="markdown"] .document-search-container {
-	margin-top: var(--drag-bump) !important; /* Match note content offset */
-	z-index: 12 !important; /* Above titlebar and inline-title */
+	margin-top: var(--drag-bump) !important;
+	/* Match note content offset */
+	z-index: 12 !important;
+	/* Above titlebar and inline-title */
 }
 
 /* ========================================
@@ -1094,7 +1173,7 @@ body.ui-tweaker-hide-help-button .workspace-drawer-vault-actions .clickable-icon
 body.ui-tweaker-hide-sync-button.is-mobile .workspace-drawer.mod-right .workspace-drawer-header .sync-status-icon:not(.ui-tweaker-sync-replacement),
 body.ui-tweaker-hide-sync-button.is-mobile .workspace-drawer.mod-right .workspace-drawer-header .workspace-drawer-header-icon.sync-status-icon:not(.ui-tweaker-sync-replacement),
 body.ui-tweaker-hide-sync-button.is-mobile .workspace-drawer.mod-right .workspace-drawer-header .clickable-icon.sync-status-icon:not(.ui-tweaker-sync-replacement),
-body.ui-tweaker-hide-sync-button.is-mobile .status-bar > .plugin-sync:not(.ui-tweaker-sync-replacement) {
+body.ui-tweaker-hide-sync-button.is-mobile .status-bar>.plugin-sync:not(.ui-tweaker-sync-replacement) {
 	display: none !important;
 }
 
@@ -1408,8 +1487,9 @@ body.ui-tweaker-sync-replacement-enabled .workspace-drawer.mod-right .workspace-
 	align-items: center;
 }
 
-.status-bar > * {
-	order: 0; /* Default order */
+.status-bar>* {
+	order: 0;
+	/* Default order */
 }
 
 /* Ensure custom status bar items inherit color from status bar for proper theme support */
@@ -1499,7 +1579,8 @@ body.ui-tweaker-sync-replacement-enabled .workspace-drawer.mod-right .workspace-
 /* Shift description text to the right for status bar items (to align with title and give chevron space) */
 /* Only apply to status bar items that have the specific class */
 .setting-item-description.ui-tweaker-status-bar-item-desc {
-	padding-left: 1.5rem !important; /* Space for chevron icon (1em icon + 0.5rem gap) */
+	padding-left: 1.5rem !important;
+	/* Space for chevron icon (1em icon + 0.5rem gap) */
 }
 
 /* Status Bar Tab - EXACTLY matches Status Bar Organizer design 1:1 */
@@ -1562,13 +1643,13 @@ span.ui-tweaker-status-bar-row-preview {
 }
 
 /* Ensure cloned status bar items and their children are visible */
-span.ui-tweaker-status-bar-row-preview > * {
+span.ui-tweaker-status-bar-row-preview>* {
 	display: flex !important;
 	visibility: visible !important;
 	opacity: 1 !important;
 }
 
-span.ui-tweaker-status-bar-row-preview > * > * {
+span.ui-tweaker-status-bar-row-preview>*>* {
 	display: inline-flex !important;
 	visibility: visible !important;
 	opacity: 1 !important;
@@ -1603,7 +1684,7 @@ span.ui-tweaker-status-bar-row-color-picker {
 	justify-content: center;
 }
 
-span.ui-tweaker-status-bar-row-color-picker > div {
+span.ui-tweaker-status-bar-row-color-picker>div {
 	display: flex;
 	align-items: center;
 }
@@ -1684,7 +1765,7 @@ div.ui-tweaker-status-bar-row-drag {
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-div.ui-tweaker-status-bar-row-drag > span.ui-tweaker-status-bar-row-preview {
+div.ui-tweaker-status-bar-row-drag>span.ui-tweaker-status-bar-row-preview {
 	opacity: 0.9;
 }
 
@@ -1701,7 +1782,7 @@ div.ui-tweaker-status-bar-row-clone {
 	background: transparent;
 }
 
-div.ui-tweaker-status-bar-row-clone > span {
+div.ui-tweaker-status-bar-row-clone>span {
 	visibility: hidden !important;
 }
 
@@ -1746,4 +1827,45 @@ div.ui-tweaker-status-bar-row-hidden:not(div.ui-tweaker-status-bar-row-disabled)
 .ui-tweaker-drag-below {
 	border-bottom: 2px solid var(--interactive-accent);
 	margin-bottom: -2px;
+}
+
+/* ========================================
+   Property Icons
+   ======================================== */
+
+/* Hide default icons in minimal mode if NOT custom */
+.metadata-property.ui-tweaker-property-minimal:not(.ui-tweaker-property-custom-icon) .metadata-property-icon {
+	display: none !important;
+}
+
+/* Specific target for the SVG inside the icon container if needed, though display:none on container is better */
+
+/* Ensure custom icons are always shown, even in minimal mode */
+.metadata-property.ui-tweaker-property-custom-icon .metadata-property-icon,
+.ui-tweaker-property-custom-icon .tree-item-icon {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+}
+
+
+/* Emoji icon specific styling */
+.ui-tweaker-emoji-icon {
+	font-style: normal;
+	font-size: 1.1em;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Settings UI tweaks */
+.ui-tweaker-empty-state {
+	padding: 2rem;
+	text-align: center;
+	opacity: 0.6;
+}
+
+.ui-tweaker-empty-state .sub-text {
+	font-size: 0.9em;
 }
