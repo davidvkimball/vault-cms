@@ -353,9 +353,13 @@
 }
 
 .astro-composer-hide-config-icon .menu-item:has(svg[data-lucide="wrench"]),
+.astro-composer-hide-config-icon .menu-item:has(svg[data-lucide="rocket"]),
 .astro-composer-hide-config-icon .menu-item:has(.lucide-wrench),
+.astro-composer-hide-config-icon .menu-item:has(.lucide-rocket),
 .astro-composer-hide-config-icon .menu-item .menu-item-icon:has(svg[data-lucide="wrench"]),
-.astro-composer-hide-config-icon .menu-item .menu-item-icon:has(.lucide-wrench) {
+.astro-composer-hide-config-icon .menu-item .menu-item-icon:has(svg[data-lucide="rocket"]),
+.astro-composer-hide-config-icon .menu-item .menu-item-icon:has(.lucide-wrench),
+.astro-composer-hide-config-icon .menu-item .menu-item-icon:has(.lucide-rocket) {
 	display: none !important;
 }
 

@@ -1859,6 +1859,60 @@ div.ui-tweaker-status-bar-row-hidden:not(div.ui-tweaker-status-bar-row-disabled)
 	justify-content: center;
 }
 
+/* ========================================
+   Settings UI
+   ======================================== */
+
+.ui-tweaker-settings-tab-root {
+	display: block;
+	min-height: 0;
+}
+
+/* Settings tabs layout and navigation */
+.ui-tweaker-settings-tabs {
+	display: block;
+	min-height: 0;
+}
+
+.ui-tweaker-settings-tabs-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--size-2-3);
+	flex-shrink: 0;
+	margin-bottom: var(--size-4-4);
+}
+
+.ui-tweaker-settings-tab-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6px 12px;
+	font-size: var(--font-ui-small);
+}
+
+/* Specific active state matching Obsidian's clickable-icon behavior but with cta emphasis */
+.ui-tweaker-settings-tab-button.is-active {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.ui-tweaker-settings-tabs-content {
+	position: static;
+	min-height: 0;
+	overflow: visible;
+	box-sizing: border-box;
+	padding-inline-end: 0;
+}
+
+/* Hide tabs by default, show only active tab */
+.ui-tweaker-settings-tab {
+	display: none;
+}
+
+.ui-tweaker-settings-tab.is-active {
+	display: block;
+}
+
 /* Settings UI tweaks */
 .ui-tweaker-empty-state {
 	padding: 2rem;

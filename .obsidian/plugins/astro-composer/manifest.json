@@ -1,1 +1,11 @@
-{"id":"astro-composer","name":"Astro Composer","version":"0.10.6","minAppVersion":"0.15.0","description":"Turn your notes into posts and pages for your Astro blog with automated content management features.","author":"David V. Kimball","authorUrl":"https://davidvkimball.com","fundingUrl":"https://patreon.com/davidvkimball","isDesktopOnly":false}
+{
+	"id": "astro-composer",
+	"name": "Astro Composer",
+	"version": "0.10.9",
+	"minAppVersion": "0.15.0",
+	"description": "Turn your notes into posts and pages for your Astro blog with automated content management features.",
+	"author": "David V. Kimball",
+	"authorUrl": "https://davidvkimball.com",
+	"fundingUrl": "https://patreon.com/davidvkimball",
+	"isDesktopOnly": false
+}
