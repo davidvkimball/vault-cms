@@ -29,9 +29,9 @@ For full installation guides, plugin details, and customization options, read th
 
 ![Vault CMS Showcase.](https://github.com/user-attachments/assets/0d1ea89e-9d6b-40b1-944d-cfe6143e222e)
 
-## Video Guide
+## Video Set Up Guide
 
-📺 [Video Guide](https://youtu.be/dSm8aLPdVz0)
+📺 [Video Guide](https://www.youtube.com/watch?v=3zeqJ5tqmaQ)
 
 > [!NOTE]
 > To see Vault CMS combined with an Astro site specifically designed with it in mind, check out my theme [Astro Modular](https://github.com/davidvkimball/astro-modular).
