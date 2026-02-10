@@ -1,6 +1,6 @@
 # Vault CMS
 
-Use [Obsidian](https://obsidian.md) as a content management system for your [Astro](https://astro.build) website.
+An open-source headless content management system that turns [Obsidian](https://obsidian.md) into a publishing platform for your [Astro](https://astro.build) website.
 
 ![Vault CMS cover with Obsidian and Astro logos at the bottom.](https://github.com/user-attachments/assets/fb5d8368-71dd-4bf8-8851-36ada6d4f530)
 
