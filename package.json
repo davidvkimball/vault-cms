@@ -1,6 +1,6 @@
 {
   "name": "create-vault-cms",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Installer for Vault CMS",
   "main": "src/cli.js",
   "bin": {
@@ -9,6 +9,7 @@
   "files": [
     "src",
     "README.md",
+    "_GUIDE.md",
     "LICENSE"
   ],
   "scripts": {

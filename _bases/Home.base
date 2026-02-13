@@ -40,7 +40,7 @@ properties:
     displayName: Title
 views:
   - type: bases-cms
-    name: Guide
+    name: Vault CMS Guide
     filters:
       and:
         - file.folder == "/"

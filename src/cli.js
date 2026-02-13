@@ -97,7 +97,7 @@ program
         throw new Error(`Template "${template}" not found in presets repository.`);
       }
 
-      const toKeep = ['_bases', '.obsidian', 'README.md'];
+      const toKeep = ['_bases', '.obsidian', '_GUIDE.md'];
       for (const item of toKeep) {
         const src = path.join(sourcePath, item);
         const dest = path.join(targetDir, item);

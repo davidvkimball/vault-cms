@@ -6,3 +6,4 @@ package-lock.json export-ignore
 .gitignore export-ignore
 .gitattributes export-ignore
 node_modules/ export-ignore
+README.md export-ignore
