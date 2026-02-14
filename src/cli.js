@@ -6,6 +6,7 @@ const path = require('path');
 const https = require('https');
 const AdmZip = require('adm-zip');
 const inquirer = require('inquirer');
+const { exec } = require('child_process');
 
 const pkg = require('../package.json');
 
@@ -137,6 +138,18 @@ program
       }
 
       console.log('\n✨ Vault CMS is ready!');
+
+      const { openObsidian } = await inquirer.prompt([{
+        type: 'confirm',
+        name: 'openObsidian',
+        message: 'Would you like to open this folder in Obsidian now?',
+        default: true
+      }]);
+
+      if (openObsidian) {
+        await openInObsidian(targetDir);
+      }
+
       process.exit(0);
     } catch (err) {
       console.error('\n❌ Installation failed:', err.message);
@@ -144,6 +157,47 @@ program
     }
   });
 
+async function openInObsidian(targetPath) {
+  // Obsidian URIs require forward slashes
+  const normalizedPath = targetPath.replace(/\\/g, '/');
+
+  // Adding a trailing slash often helps Obsidian recognize it as a folder/vault
+  const folderUri = `obsidian://open?path=${encodeURIComponent(normalizedPath + '/')}`;
+
+  const anchors = [
+    path.join('_bases', 'Home.base'),
+    '_GUIDE.md'
+  ];
+
+  let anchorFile = '';
+  for (const a of anchors) {
+    if (await fs.pathExists(path.join(targetPath, a))) {
+      anchorFile = a;
+      break;
+    }
+  }
+
+  const fileUri = anchorFile
+    ? `obsidian://open?path=${encodeURIComponent(normalizedPath + '/' + anchorFile.replace(/\\/g, '/'))}`
+    : folderUri;
+
+  return new Promise((resolve) => {
+    const command = process.platform === 'win32'
+      ? `start "" "${fileUri}"`
+      : process.platform === 'darwin'
+        ? `open "${fileUri}"`
+        : `xdg-open "${fileUri}"`;
+
+    console.log(`  📂 Opening Obsidian: ${fileUri}`);
+
+    exec(command, (error) => {
+      if (error) {
+        console.error(`  ❌ Failed to open Obsidian: ${error.message}`);
+      }
+      resolve();
+    });
+  });
+}
 async function findProjectRoot(startDir) {
   let current = startDir;
   // Look up to 6 levels up for a project root (Astro config, package.json, or .git)
