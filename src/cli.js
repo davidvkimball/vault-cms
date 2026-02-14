@@ -142,7 +142,7 @@ program
       const { openObsidian } = await inquirer.prompt([{
         type: 'confirm',
         name: 'openObsidian',
-        message: 'Would you like to open this folder in Obsidian now?',
+        message: 'Would you like to open Obsidian and add this folder as a vault?',
         default: true
       }]);
 
@@ -158,37 +158,18 @@ program
   });
 
 async function openInObsidian(targetPath) {
-  // Obsidian URIs require forward slashes
-  const normalizedPath = targetPath.replace(/\\/g, '/');
-
-  // Adding a trailing slash often helps Obsidian recognize it as a folder/vault
-  const folderUri = `obsidian://open?path=${encodeURIComponent(normalizedPath + '/')}`;
-
-  const anchors = [
-    path.join('_bases', 'Home.base'),
-    '_GUIDE.md'
-  ];
-
-  let anchorFile = '';
-  for (const a of anchors) {
-    if (await fs.pathExists(path.join(targetPath, a))) {
-      anchorFile = a;
-      break;
-    }
-  }
-
-  const fileUri = anchorFile
-    ? `obsidian://open?path=${encodeURIComponent(normalizedPath + '/' + anchorFile.replace(/\\/g, '/'))}`
-    : folderUri;
+  const obsidianUri = 'obsidian://choose-vault';
 
   return new Promise((resolve) => {
     const command = process.platform === 'win32'
-      ? `start "" "${fileUri}"`
+      ? `start "" "${obsidianUri}"`
       : process.platform === 'darwin'
-        ? `open "${fileUri}"`
-        : `xdg-open "${fileUri}"`;
+        ? `open "${obsidianUri}"`
+        : `xdg-open "${obsidianUri}"`;
 
-    console.log(`  📂 Opening Obsidian: ${fileUri}`);
+    console.log(`\n  📂 Opening Obsidian Vault Manager...`);
+    console.log(`  📍 Action: Click "Open folder as vault" and select:`);
+    console.log(`     ${targetPath}\n`);
 
     exec(command, (error) => {
       if (error) {
