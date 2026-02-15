@@ -58,7 +58,7 @@ program
           {
             type: 'input',
             name: 'path',
-            message: 'Where should we install Vault CMS?',
+            message: 'Where should we install Vault CMS? (use . for current folder)',
             default: 'src/content',
           }
         ]);

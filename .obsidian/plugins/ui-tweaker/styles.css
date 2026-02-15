@@ -553,7 +553,8 @@ body:not(.is-mobile).hider-right-sidebar-button-reveal .sidebar-toggle-button.mo
    Hide status
    ======================================== */
 
-.hider-status .status-bar {
+.hider-status .status-bar,
+.is-mobile.hider-status-mobile .status-bar {
 	display: none !important;
 }
 
