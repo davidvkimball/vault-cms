@@ -19,6 +19,10 @@
   "showToolbarRemove": true,
   "showToolbarDelete": true,
   "forceStaticGifImages": false,
+  "embeddedViewRefreshDebounceMs": 250,
+  "virtualScrollThreshold": 100,
+  "virtualScrollBuffer": 20,
+  "migrationBasesCmsToCmsDone": true,
   "showPropertiesInfoModal": true,
   "thumbnailCacheSize": "balanced"
 }

@@ -454,6 +454,12 @@ settings:
 	background-color: var(--bases-cms-view-background, transparent);
 }
 
+/* Match native Bases cards view padding (single source: .bases-view) */
+.bases-view[data-view-type="cms"] {
+	--bases-view-padding: var(--size-4-3);
+	--bases-embed-padding: var(--size-4-1) 1px;
+}
+
 .bases-cms-grid {
 	display: grid;
 	gap: var(--bases-cms-card-spacing, 8px);
@@ -461,8 +467,19 @@ settings:
 	width: 100%;
 	max-width: 100%;
 	box-sizing: border-box;
-	padding: var(--bases-cms-card-padding-container, var(--size-4-3));
+	padding: 0;
 	grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width, 300px), 1fr));
+}
+
+/* Ensure no extra padding in embedded view containers */
+.markdown-rendered .bases-view,
+.markdown-rendered .bases-cms-container {
+	padding-right: 0 !important;
+}
+
+/* Remove reserved scrollbar gutter in embed so cards fill width (Bases may set scrollbar-gutter: stable on .bases-view) */
+.markdown-rendered .bases-view {
+	scrollbar-gutter: auto;
 }
 
 /* Minimum grid columns - when set to 2, ensure at least 2 columns by constraining card width */
@@ -570,8 +587,8 @@ body.bases-cms-card-background-custom .bases-cms .card {
 /* Selection checkbox */
 .bases-cms-select-checkbox {
 	position: absolute;
-	top: 16px;
-	right: 14px;
+	top: 20px;
+	right: 18px;
 	z-index: 11;
 	--checkbox-click-radius: var(--bases-cms-checkbox-click-radius, 32px);
 	width: var(--checkbox-click-radius);
@@ -934,8 +951,8 @@ body.bases-cms-date-color-custom .bases-cms .card-date {
 /* Position badge absolutely at top-left, vertically aligned with checkbox */
 .bases-cms .card .card-status-badge {
 	position: absolute;
-	top: 16px;
-	left: 8px;
+	top: 20px;
+	left: 12px;
 	transform: translateY(-50%);
 	z-index: 11;
 	margin: 0;
@@ -948,7 +965,7 @@ body.bases-cms-date-color-custom .bases-cms .card-date {
 
 /* Add top margin to title when badge is present so it appears below the badge */
 .bases-cms .card:not(.image-format-cover):has(.card-status-badge) .card-title {
-	margin-top: 28px;
+	margin-top: 32px;
 }
 
 /* Badge style presets */
@@ -1248,22 +1265,33 @@ body.bases-cms-property-color-custom .bases-cms .property-content {
 }
 
 .bases-cms-bulk-toolbar {
+	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: 1rem;
 	width: 100%;
-	opacity: 0;
-	transform: translateY(-10px);
-	transition: opacity 0.2s ease, transform 0.2s ease;
+	height: 44px;
+	min-height: 44px;
+	background-color: var(--background-primary);
+	z-index: 15;
 	padding-left: var(--bases-header-padding-start, var(--size-4-2));
 	padding-right: var(--bases-header-padding-end, var(--size-4-2));
-	margin-top: var(--size-4-1);
-	margin-bottom: var(--size-4-1);
+	margin: 0;
 	box-sizing: border-box;
-	min-width: 0;
-	/* Allow flex items to shrink */
 	overflow: hidden;
-	/* Prevent overflow */
+	opacity: 0;
+	transform: translateY(-5px);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Embedded: tighter right padding so toolbar aligns with content */
+.markdown-rendered .bases-cms-bulk-toolbar {
+	padding-right: 4px;
+}
+
+/* Ensure no gap between header and bulk toolbar */
+.bases-header+.bases-cms-bulk-toolbar {
+	margin-top: 0;
 }
 
 .bases-cms-bulk-toolbar-left {
@@ -1272,9 +1300,7 @@ body.bases-cms-property-color-custom .bases-cms .property-content {
 	gap: 0;
 	flex: 0 0 auto;
 	min-width: 0;
-	/* Allow shrinking */
 	flex-wrap: nowrap;
-	/* Keep buttons in a row */
 }
 
 .bases-cms-bulk-toolbar-right {
@@ -1284,9 +1310,7 @@ body.bases-cms-property-color-custom .bases-cms .property-content {
 	flex: 0 0 auto;
 	margin-left: auto;
 	min-width: 0;
-	/* Allow shrinking */
 	flex-wrap: nowrap;
-	/* Keep buttons in a row */
 }
 
 /* Mobile-specific toolbar improvements */

@@ -44,6 +44,7 @@
   "swapMobileNewTabIcon": false,
   "hideMobileTitle": false,
   "hideMobileSyncIcon": true,
+  "hideStatusBarMobile": false,
   "navigateButtonPosition": "1",
   "navigationButtonPosition": "2",
   "quickSwitcherPosition": "3",
@@ -122,6 +123,13 @@
       "commandId": "obsidian-git:push",
       "mode": "any",
       "sticky": "right"
+    },
+    {
+      "id": "plugin-obsidian-git-status;1",
+      "name": "Git: pull: everything is up-to-date",
+      "type": "existing",
+      "hidden": false,
+      "mdOnly": false
     }
   ],
   "explorerCommands": [],

@@ -13,7 +13,7 @@ const pkg = require('../package.json');
 const program = new Command();
 
 program
-  .name('create-vault-cms')
+  .name('create-vaultcms')
   .description('Official installer for Vault CMS')
   .version(pkg.version);
 
