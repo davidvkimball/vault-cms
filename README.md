@@ -33,13 +33,13 @@ If you prefer to install manually, you can download the latest version of Vault 
 
 ### Presets
 
-If you are using a supported theme like **Starlight**, **Slate**, or **Chiri**, you can use a preconfigured preset:
+For themes like **Starlight**, **Slate**, or **Chiri**, run the CLI and choose a preset when prompted:
 
 ```bash
-pnpm create vaultcms -- --template starlight
+pnpm create vaultcms
 ```
 
-See all available presets at the [Presets Repo](https://github.com/davidvkimball/vaultcms-presets).
+To skip the prompt and set the template in one go (e.g. for scripts), add `-- --template <name>` after the command. See all presets at the [Presets Repo](https://github.com/davidvkimball/vaultcms-presets).
 
 ## Deep Dive
 
