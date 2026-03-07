@@ -38,7 +38,7 @@ program
         const { useTemplate } = await inquirer.prompt([{
           type: 'confirm',
           name: 'useTemplate',
-          message: 'Would you like to use a preset template (e.g. Starlight, Slate)?',
+          message: 'Would you like to use a preset template (e.g. Chiri, Starlight)?',
           default: false
         }]);
 
@@ -53,8 +53,8 @@ program
         }
       }
 
-      // Smart default: root (.) for non-preset, src/content for preset
-      const defaultInstallPath = template ? 'src/content' : '.';
+      // Always default to project root — presets are configured for root installs
+      const defaultInstallPath = '.';
 
       if (!targetPath) {
         // When no target specified, detect from cwd for the interactive prompt
@@ -102,17 +102,6 @@ program
           }
         ]);
         targetPath = answers.path;
-      }
-
-      // For presets: if user provided a project root as target, install into src/content
-      if (template && target && targetPath === target) {
-        const resolvedTarget = path.resolve(targetPath);
-        const isProject = await isAstroProjectDir(resolvedTarget) ||
-          await fs.pathExists(path.join(resolvedTarget, 'package.json'));
-        if (isProject) {
-          targetPath = path.join(targetPath, 'src', 'content');
-          console.log(`\n📦 Preset selected — installing into ${path.relative(process.cwd(), path.resolve(targetPath)) || targetPath}`);
-        }
       }
 
       const targetDir = path.resolve(targetPath);
@@ -219,11 +208,14 @@ program
         }
       }
 
-      // Determine if this is a root install (vault at project root)
-      const isRootInstall = path.resolve(targetDir) === path.resolve(resolvedProjectRoot);
-
-      // Post-install: adjust configs based on install location
-      await adjustConfigs(targetDir, isRootInstall);
+      // For preset installs: fix absolute paths in vault-cms data.json
+      if (template) {
+        await fixPresetPaths(targetDir, resolvedProjectRoot);
+      } else {
+        // Non-preset installs: adjust configs based on install location
+        const isRootInstall = path.resolve(targetDir) === path.resolve(resolvedProjectRoot);
+        await adjustConfigs(targetDir, isRootInstall);
+      }
 
       // Smart .gitignore logic: Look for project root
       const gitignorePath = path.join(resolvedProjectRoot, '.gitignore');
@@ -409,6 +401,48 @@ async function scanPagesDir(dir, pagesRoot, collections, routes) {
 }
 
 /**
+ * Fix absolute paths in preset's vault-cms data.json after install.
+ * Replaces hardcoded projectRoot and configFilePath with the actual target paths.
+ */
+async function fixPresetPaths(targetDir, projectRoot) {
+  const dataJsonPath = path.join(targetDir, '.obsidian', 'plugins', 'vault-cms', 'data.json');
+  if (!(await fs.pathExists(dataJsonPath))) return;
+
+  try {
+    const data = JSON.parse(await fs.readFile(dataJsonPath, 'utf8'));
+
+    // Set projectRoot to the actual project root
+    data.projectRoot = projectRoot;
+
+    // Fix configFilePath: preserve the relative portion (e.g. src/config.ts or astro.config.mjs)
+    if (data.configFilePath) {
+      // Extract just the filename or relative path from the old absolute path
+      const oldConfigPath = data.configFilePath.replace(/\\/g, '/');
+      // Look for common config file patterns
+      const configPatterns = [
+        'src/config.ts', 'src/config.js', 'src/config.mjs',
+        'astro.config.mjs', 'astro.config.ts', 'astro.config.js'
+      ];
+      let relativeConfig = null;
+      for (const pattern of configPatterns) {
+        if (oldConfigPath.endsWith(pattern)) {
+          relativeConfig = pattern;
+          break;
+        }
+      }
+      if (relativeConfig) {
+        data.configFilePath = path.join(projectRoot, relativeConfig);
+      }
+    }
+
+    await fs.writeFile(dataJsonPath, JSON.stringify(data, null, 2) + '\n', 'utf8');
+    console.log('  ✓ Updated vault-cms config paths for this project');
+  } catch (error) {
+    console.warn(`  ⚠️  Could not fix preset paths: ${error.message}`);
+  }
+}
+
+/**
  * Post-install: adjust configs based on whether this is a root install or subfolder install.
  */
 async function adjustConfigs(targetDir, isRootInstall) {
@@ -559,10 +593,10 @@ function fetchTemplates() {
             .map(item => item.name);
           resolve(dirs);
         } catch (e) {
-          resolve(['starlight', 'slate', 'chiri']);
+          resolve(['chiri', 'slate', 'starlight']);
         }
       });
-    }).on('error', () => resolve(['starlight', 'slate', 'chiri']));
+    }).on('error', () => resolve(['chiri', 'slate', 'starlight']));
   });
 }
 
