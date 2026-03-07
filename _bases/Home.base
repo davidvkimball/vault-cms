@@ -40,10 +40,11 @@ properties:
     displayName: Title
 views:
   - type: cms
-    name: Guide
+    name: Vault CMS Guide
     filters:
       and:
         - file.folder == "/"
+        - file.name.endsWith("GUIDE")
     order: []
     sort:
       - property: file.ctime
