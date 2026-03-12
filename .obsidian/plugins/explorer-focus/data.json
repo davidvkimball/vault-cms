@@ -3,5 +3,9 @@
   "showFileExplorerIcon": true,
   "focusLevel": "custom",
   "customFolderPath": "src/content",
-  "hideAncestorFolders": false
+  "hideAncestorFolders": false,
+  "autoHidePaths": [
+    "node_modules",
+    "dist"
+  ]
 }

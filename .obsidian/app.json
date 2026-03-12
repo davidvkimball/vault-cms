@@ -3,7 +3,10 @@
   "promptDelete": true,
   "showIndentGuide": false,
   "attachmentFolderPath": "./attachments",
-  "userIgnoreFilters": null,
+  "userIgnoreFilters": [
+    "dist",
+    "node_modules/"
+  ],
   "focusNewTab": false,
   "mobilePullAction": "command-palette:open",
   "trashOption": "system",
