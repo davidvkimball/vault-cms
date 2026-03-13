@@ -18,6 +18,7 @@ program
   .version(pkg.version);
 
 program
+  .allowExcessArguments(true)
   .argument('[target]', 'target directory')
   .option('-t, --template <name>', 'template to use (from vaultcms-presets)')
   .action(async (target, options) => {
@@ -57,27 +58,22 @@ program
       let defaultInstallPath = '.';
 
       if (!targetPath) {
-        // When template selected, consult preset manifest for install target
+        // When template selected, use manifest install target and skip path prompt
         if (template) {
           const manifest = await fetchPresetManifest();
           const presetConfig = manifest?.presets?.[template.toLowerCase()];
-          if (presetConfig?.installTarget) {
-            defaultInstallPath = presetConfig.installTarget;
-          } else {
+          targetPath = presetConfig?.installTarget || 'src/content';
+        } else {
+          // No template: detect from cwd, then prompt for path
+          const cwd = process.cwd();
+          const detectionBase = path.resolve(cwd);
+          const projectRoot = await findProjectRoot(detectionBase);
+          const isAstroProject = await isAstroProjectDir(projectRoot);
+          const detectedRoutes = isAstroProject ? await detectAstroRoutes(projectRoot) : [];
+
+          if (isAstroProject) {
             defaultInstallPath = 'src/content';
-          }
-        }
-
-        // When no target specified, detect from cwd for the interactive prompt
-        const cwd = process.cwd();
-        const detectionBase = path.resolve(cwd);
-        const projectRoot = await findProjectRoot(detectionBase);
-        const isAstroProject = await isAstroProjectDir(projectRoot);
-        const detectedRoutes = isAstroProject ? await detectAstroRoutes(projectRoot) : [];
-
-        if (isAstroProject && !template) {
-          defaultInstallPath = 'src/content';
-          console.log(`\n📂 Detected Astro project at ${projectRoot}`);
+            console.log(`\n📂 Detected Astro project at ${projectRoot}`);
 
           // Show detected content collections
           const contentDir = path.join(projectRoot, 'src', 'content');
@@ -102,17 +98,18 @@ program
           }
 
           console.log('\n📂 Default install target: src/content (use . for project root)\n');
-        }
-
-        const answers = await inquirer.prompt([
-          {
-            type: 'input',
-            name: 'path',
-            message: 'Where should we install Vault CMS? (src/content or . for root)',
-            default: defaultInstallPath,
           }
-        ]);
-        targetPath = answers.path;
+
+          const answers = await inquirer.prompt([
+            {
+              type: 'input',
+              name: 'path',
+              message: 'Where should we install Vault CMS? (src/content or . for root)',
+              default: defaultInstallPath,
+            }
+          ]);
+          targetPath = answers.path;
+        }
       }
 
       const targetDir = path.resolve(targetPath);
