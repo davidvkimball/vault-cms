@@ -39,7 +39,7 @@ For themes like **Starlight**, **Slate**, or **Chiri**, run the CLI and choose a
 pnpm create vaultcms
 ```
 
-To skip the prompt and set the template in one go (e.g. for scripts), add `-- --template <name>` after the command. See all presets at the [Presets Repo](https://github.com/davidvkimball/vaultcms-presets).
+To skip the prompt and set the template in one go (e.g. for scripts), use `pnpm create vaultcms --template <name>`. See all presets at the [Presets Repo](https://github.com/davidvkimball/vaultcms-presets).
 
 ## Deep Dive
 
