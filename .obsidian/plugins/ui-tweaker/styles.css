@@ -1896,15 +1896,26 @@ div.ui-tweaker-status-bar-row-hidden:not(div.ui-tweaker-status-bar-row-disabled)
 	overflow: visible;
 	box-sizing: border-box;
 	padding-inline-end: 0;
+	width: 100%;
+	max-width: 740px;
+	margin: 0 auto;
+	scrollbar-gutter: stable;
 }
 
 /* Hide tabs by default, show only active tab */
 .ui-tweaker-settings-tab {
 	display: none;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .ui-tweaker-settings-tab.is-active {
-	display: block;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 }
 
 /* Settings UI tweaks */
@@ -1916,4 +1927,31 @@ div.ui-tweaker-status-bar-row-hidden:not(div.ui-tweaker-status-bar-row-disabled)
 
 .ui-tweaker-empty-state .sub-text {
 	font-size: 0.9em;
+}
+
+.ui-tweaker-reset-container {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	box-sizing: border-box;
+	margin-bottom: var(--size-4-4);
+}
+
+.ui-tweaker-reset-setting {
+	background-color: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+	flex: 0 0 auto !important;
+}
+
+.ui-tweaker-reset-setting .setting-item-info {
+	flex: 0 0 auto !important;
+	margin-right: 8px;
+}
+
+.ui-tweaker-reset-setting .setting-item-name {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
 }

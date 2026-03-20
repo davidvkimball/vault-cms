@@ -147,11 +147,45 @@
 	margin-bottom: 1rem;
 }
 
-.seo-panel-header h2 {
+.seo-panel-header-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+
+.seo-panel-header-row h2 {
 	margin: 0;
 	color: var(--text-normal);
 	font-size: 0.9rem;
 	font-weight: 600;
+}
+
+.seo-header-icon-wrap {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+/* Match seo-sort-btn / seo-toggle-icon: no background, no border, default cursor */
+.seo-header-icon {
+	--icon-size: 1rem;
+	border: none !important;
+	background: none !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+	cursor: default;
+	color: var(--text-muted);
+}
+.seo-header-icon:hover {
+	background: none !important;
+	cursor: default;
+}
+.seo-header-icon.clickable-icon {
+	border: none !important;
+	background: none !important;
+	box-shadow: none !important;
+	padding: 0 !important;
 }
 
 .seo-filename {
