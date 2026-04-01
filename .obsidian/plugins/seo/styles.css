@@ -164,28 +164,36 @@
 .seo-header-icon-wrap {
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
+	gap: 0;
 }
 
-/* Match seo-sort-btn / seo-toggle-icon: no background, no border, default cursor */
-.seo-header-icon {
-	--icon-size: 1rem;
-	border: none !important;
-	background: none !important;
-	box-shadow: none !important;
-	padding: 0 !important;
-	cursor: default;
-	color: var(--text-muted);
+/*
+ * Header copy/download: match Obsidian's .clickable-icon (vault drawer / workspace icons).
+ * We use <button> for a11y; reset native button chrome so sizing matches span.clickable-icon.
+ */
+.seo-header-icon-wrap button.clickable-icon {
+	-webkit-app-region: no-drag;
+	appearance: none;
+	-webkit-appearance: none;
+	margin: 0;
+	font: inherit;
+	line-height: 1;
+	border: none;
+	box-shadow: none;
+	background-color: transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--size-2-2) var(--size-2-3);
+	cursor: var(--cursor);
+	border-radius: var(--clickable-icon-radius);
+	color: var(--icon-color);
+	height: auto;
 }
-.seo-header-icon:hover {
-	background: none !important;
-	cursor: default;
-}
-.seo-header-icon.clickable-icon {
-	border: none !important;
-	background: none !important;
-	box-shadow: none !important;
-	padding: 0 !important;
+
+.seo-header-icon-wrap button.clickable-icon:hover {
+	background-color: var(--background-modifier-hover);
+	cursor: var(--cursor);
 }
 
 .seo-filename {
