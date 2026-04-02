@@ -60,6 +60,11 @@
 	margin-bottom: 1rem;
 }
 
+/* Reduce scroll jumping when toggles insert/remove rows in the Content types step */
+.vault-cms-wizard .content-type-step-content {
+	overflow-anchor: none;
+}
+
 .vault-cms-wizard .wizard-skip-button {
 	opacity: 0.6;
 }
