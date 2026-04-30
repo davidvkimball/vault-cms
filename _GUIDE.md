@@ -23,4 +23,7 @@ We use a custom Obsidian bases view to give you a bird's-eye view of your conten
 
 - **Documentation**: [docs.vaultcms.org](https://docs.vaultcms.org)
 - **Community**: [join the Discord](https://discord.gg/gyrNHAwHK8)
-- **Video Guide**: [set up guide on YouTube](https://www.youtube.com/watch?v=3zeqJ5tqmaQ)
+
+### Video walkthrough
+
+![Vault CMS setup walkthrough](https://www.youtube.com/watch?v=MnXoikTajfI)

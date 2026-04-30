@@ -50,8 +50,11 @@ To skip the prompt and set the template in one go (e.g. for scripts), use `npx c
 ## Deep Dive
 
 - **Documentation**: [docs.vaultcms.org](https://docs.vaultcms.org)
-- **Video Guide**: [Set Up Guide on YouTube](https://www.youtube.com/watch?v=3zeqJ5tqmaQ)
 - **Community**: [Join the Discord](https://discord.gg/gyrNHAwHK8)
+
+### Video Guide
+
+[![Vault CMS Setup Walkthrough](https://img.youtube.com/vi/MnXoikTajfI/maxresdefault.jpg)](https://www.youtube.com/watch?v=MnXoikTajfI)
 
 > [!NOTE]
 > To see Vault CMS combined with an Astro site specifically designed with it in mind, check out the [Astro Modular](https://github.com/davidvkimball/astro-modular) theme.
