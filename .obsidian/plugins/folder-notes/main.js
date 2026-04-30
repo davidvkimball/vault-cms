@@ -392,10 +392,10 @@ function getFileExplorer(plugin) {
   if (!leaf) {
     return void 0;
   }
-  if (((_c = (_b = (_a = leaf.containerEl) == null ? void 0 : _a.lastChild) == null ? void 0 : _b.dataset) == null ? void 0 : _c.type) == "mk-path-view") {
+  if (((_c = (_b = (_a = leaf.containerEl) == null ? void 0 : _a.lastChild) == null ? void 0 : _b.dataset) == null ? void 0 : _c.type) === "mk-path-view") {
     plugin.app.workspace.iterateAllLeaves((x) => {
       var _a2, _b2;
-      if (((_b2 = (_a2 = x.tabHeaderEl) == null ? void 0 : _a2.dataset) == null ? void 0 : _b2.type) == "file-explorer") {
+      if (((_b2 = (_a2 = x.tabHeaderEl) == null ? void 0 : _a2.dataset) == null ? void 0 : _b2.type) === "file-explorer") {
         leaf = x;
       }
     });
@@ -2098,6 +2098,7 @@ async function updateCSSClassesForFolder(folderPath, plugin) {
   if (!folderNote || detachedFolderNote) {
     removeCSSClassFromFileExplorerEL(folder == null ? void 0 : folder.path, "has-folder-note", false, plugin);
     removeCSSClassFromFileExplorerEL(folder == null ? void 0 : folder.path, "only-has-folder-note", true, plugin);
+    removeCSSClassFromFileExplorerEL(folderNote == null ? void 0 : folderNote.path, "is-folder-note", false, plugin);
     return;
   }
   const excludedFolder = getExcludedFolder(plugin, folder.path, true);
@@ -2119,6 +2120,17 @@ async function updateCSSClassesForFolder(folderPath, plugin) {
     }
   }
   markFolderAndNoteWithClasses(folderNote, folder, plugin);
+}
+async function updateCSSClassesForFolderNote(filePath, plugin) {
+  const file = plugin.app.vault.getAbstractFileByPath(filePath);
+  if (!file || !(file instanceof import_obsidian7.TFile)) {
+    return;
+  }
+  const folder = getFolder(plugin, file);
+  if (!folder || !(folder instanceof import_obsidian7.TFolder)) {
+    return;
+  }
+  updateCSSClassesForFolder(folder.path, plugin);
 }
 function markFolderAndNoteWithClasses(file, folder, plugin) {
   markFileAsFolderNote(file, plugin);
@@ -3065,11 +3077,18 @@ function addExcludeFolderListItem(settings, containerEl, excludedFolder) {
 }
 
 // src/functions/excalidraw.ts
-async function openExcalidrawView(app2, leaf) {
+async function openExcalidrawView(app2, file) {
   const { excalidraw, excalidrawEnabled } = await getExcalidrawPlugin(app2);
   if (excalidrawEnabled && excalidraw) {
-    excalidraw.setExcalidrawView(leaf);
+    excalidraw.openDrawing(file);
   }
+}
+async function getDefaultTemplate(app2) {
+  const { excalidraw, excalidrawEnabled } = await getExcalidrawPlugin(app2);
+  if (excalidrawEnabled && excalidraw) {
+    return excalidraw.getBlankDrawing();
+  }
+  return "";
 }
 async function getExcalidrawPlugin(app2) {
   const { plugins: pluginManager } = app2;
@@ -3109,21 +3128,6 @@ var AskForExtensionModal = class extends import_obsidian16.FuzzySuggestModal {
 };
 
 // src/functions/folderNoteFunctions.ts
-var defaultExcalidrawTemplate = `---
-
-excalidraw-plugin: parsed
-tags: [excalidraw]
-
----
-==\u26A0  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. \u26A0==
-
-
-%%
-# Drawing
-\`\`\`json
-{'type":"excalidraw","version":2,"source":"https://github.com/zsviczian/obsidian-excalidraw-plugin/releases/tag/1.9.20","elements":[],"appState":{"gridSize":null,"viewBackgroundColor":"#ffffff'}}
-\`\`\`
-%%`;
 async function createFolderNote(plugin, folderPath, openFile, extension, displayModal, preexistingNote) {
   var _a;
   let {
@@ -3176,7 +3180,7 @@ async function createFolderNote(plugin, folderPath, openFile, extension, display
     }
     await leaf.openFile(folderNote);
     if (plugin.settings.folderNoteType === ".excalidraw" || extension === ".excalidraw") {
-      openExcalidrawView(plugin.app, leaf);
+      openExcalidrawView(plugin.app, folderNote);
     }
   }
   const matchingExtension = (extension == null ? void 0 : extension.split(".").pop()) === plugin.settings.templatePath.split(".").pop();
@@ -3218,7 +3222,7 @@ async function handleCreateFolderNote(plugin, folderNoteType, openFile, leaf, fo
         if (["md", "canvas", "txt"].includes(templateFile.extension)) {
           content = await plugin.app.vault.read(templateFile);
           if (extension === ".excalidraw" && !content.includes("==\u26A0  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. \u26A0==")) {
-            content = defaultExcalidrawTemplate;
+            content = await getDefaultTemplate(plugin.app);
           }
         } else {
           plugin.app.vault.readBinary(templateFile).then(async (data) => {
@@ -3231,7 +3235,7 @@ async function handleCreateFolderNote(plugin, folderNoteType, openFile, leaf, fo
         }
       }
     } else if (plugin.settings.folderNoteType === ".excalidraw" || extension === ".excalidraw") {
-      content = defaultExcalidrawTemplate;
+      content = await getDefaultTemplate(plugin.app);
     } else if (plugin.settings.folderNoteType === ".canvas") {
       content = "{}";
     }
@@ -3439,6 +3443,7 @@ function detachFolderNote(plugin, file) {
   if (!folder)
     return;
   const excludedFolder = new ExcludedFolder(folder.path, plugin.settings.excludeFolders.length, void 0, plugin);
+  excludedFolder.showFolderNote = true;
   excludedFolder.hideInSettings = true;
   excludedFolder.disableFolderNote = true;
   excludedFolder.disableSync = true;
@@ -3447,6 +3452,7 @@ function detachFolderNote(plugin, file) {
   excludedFolder.detached = true;
   excludedFolder.detachedFilePath = file.path;
   addExcludedFolder(plugin, excludedFolder);
+  updateCSSClassesForFolderNote(file.path, plugin);
 }
 function getFolder(plugin, file, storageLocation) {
   var _a, _b;
@@ -4506,6 +4512,11 @@ async function renderPath(settingsTab) {
     } else {
       document.body.classList.remove("folder-note-cursive-path");
     }
+    await settingsTab.plugin.saveSettings();
+  }));
+  new import_obsidian26.Setting(containerEl).setName("Hide folder note name in the path").setDesc("Only show the folder name in the path and hide the folder note name.").addToggle((toggle) => toggle.setValue(settingsTab.plugin.settings.hideFolderNoteNameInPath).onChange(async (value) => {
+    document.body.classList.toggle("folder-note-hide-name-path", value);
+    settingsTab.plugin.settings.hideFolderNoteNameInPath = value;
     await settingsTab.plugin.saveSettings();
   }));
 }
@@ -6819,7 +6830,8 @@ var DEFAULT_SETTINGS2 = {
   firstTimeInsertOverview: true,
   fvGlobalSettings: {
     autoUpdateLinks: false
-  }
+  },
+  hideFolderNoteNameInPath: false
 };
 var SettingsTab2 = class extends import_obsidian40.PluginSettingTab {
   constructor(app2, plugin) {
@@ -7660,11 +7672,22 @@ async function setupFolderTitle(folderTitle, plugin, folderPath) {
   });
 }
 async function updateFolderNamesInPath(plugin, titleContainer) {
-  const headers = titleContainer.querySelectorAll("span.view-header-breadcrumb");
+  const titleParent = titleContainer.querySelector(".view-header-title-parent");
   let path = "";
   const TRAILING_SLASH_LENGTH = 1;
-  headers.forEach(async (breadcrumb) => {
-    var _a, _b;
+  if ((titleParent == null ? void 0 : titleParent.childNodes.length) === 0) {
+    titleContainer.classList.remove("hide-folder-note-title-in-path");
+  }
+  titleParent == null ? void 0 : titleParent.childNodes.forEach(async (breadcrumb) => {
+    var _a, _b, _c, _d, _e, _f, _g;
+    if (!(breadcrumb instanceof HTMLElement))
+      return;
+    if (breadcrumb.classList.contains("view-header-breadcrumb-separator")) {
+      if (breadcrumb.nextSibling === null) {
+        breadcrumb.classList.add("is-last-separator");
+      }
+      return;
+    }
     path += (_a = breadcrumb.getAttribute("old-name")) != null ? _a : breadcrumb.innerText.trim();
     path += "/";
     const folderPath = path.slice(0, -TRAILING_SLASH_LENGTH);
@@ -7672,6 +7695,19 @@ async function updateFolderNamesInPath(plugin, titleContainer) {
     if (excludedFolder == null ? void 0 : excludedFolder.disableFolderNote)
       return;
     const folderNote = getFolderNote(plugin, folderPath);
+    const viewHeaderTitle = titleContainer.querySelector(".view-header-title");
+    if (viewHeaderTitle) {
+      const filePath = path + viewHeaderTitle.innerText.trim() + ".md";
+      const file = plugin.app.vault.getAbstractFileByPath(filePath);
+      const folder = getFolderNoteFolder(plugin, (_b = file == null ? void 0 : file.path) != null ? _b : "", (_c = file == null ? void 0 : file.name) != null ? _c : "");
+      if (folder && file && file.path === (folderNote == null ? void 0 : folderNote.path) && ((_d = file.parent) == null ? void 0 : _d.path) !== "/") {
+        (_e = viewHeaderTitle.parentElement) == null ? void 0 : _e.classList.add("hide-folder-note-title-in-path");
+        viewHeaderTitle.classList.add("path-is-folder-note");
+      } else {
+        (_f = viewHeaderTitle.parentElement) == null ? void 0 : _f.classList.remove("hide-folder-note-title-in-path");
+        viewHeaderTitle.classList.remove("path-is-folder-note");
+      }
+    }
     if (!folderNote)
       return;
     if (folderNote)
@@ -7683,7 +7719,7 @@ async function updateFolderNamesInPath(plugin, titleContainer) {
       }, { capture: true });
     }
     if (plugin.settings.frontMatterTitle.enabled) {
-      (_b = plugin.fmtpHandler) == null ? void 0 : _b.fmptUpdateFolderName({ id: "", result: false, path: folderPath, pathOnly: true, breadcrumb }, true);
+      (_g = plugin.fmtpHandler) == null ? void 0 : _g.fmptUpdateFolderName({ id: "", result: false, path: folderPath, pathOnly: true, breadcrumb }, true);
     }
   });
 }
@@ -8688,46 +8724,7 @@ var FolderNotesPlugin = class extends import_obsidian52.Plugin {
     this.addSettingTab(this.settingsTab);
     this.saveSettings();
     this.fvIndexDB = new FvIndexDB(this);
-    document.body.classList.add("folder-notes-plugin");
-    if (this.settings.hideFolderNote) {
-      document.body.classList.add("hide-folder-note");
-    }
-    if (this.settings.hideCollapsingIconForEmptyFolders) {
-      document.body.classList.add("fn-hide-empty-collapse-icon");
-    }
-    if (this.settings.underlineFolder) {
-      document.body.classList.add("folder-note-underline");
-    }
-    if (this.settings.boldName) {
-      document.body.classList.add("folder-note-bold");
-    }
-    if (this.settings.cursiveName) {
-      document.body.classList.add("folder-note-cursive");
-    }
-    if (this.settings.boldNameInPath) {
-      document.body.classList.add("folder-note-bold-path");
-    }
-    if (this.settings.cursiveNameInPath) {
-      document.body.classList.add("folder-note-cursive-path");
-    }
-    if (this.settings.underlineFolderInPath) {
-      document.body.classList.add("folder-note-underline-path");
-    }
-    if (this.settings.stopWhitespaceCollapsing) {
-      document.body.classList.add("fn-whitespace-stop-collapsing");
-    }
-    if (this.settings.hideCollapsingIcon) {
-      document.body.classList.add("fn-hide-collapse-icon");
-    }
-    if (this.settings.ignoreAttachmentFolder) {
-      document.body.classList.add("fn-ignore-attachment-folder");
-    }
-    if (!this.settings.highlightFolder) {
-      document.body.classList.add("disable-folder-highlight");
-    }
-    if ((0, import_obsidian52.requireApiVersion)("1.7.2")) {
-      document.body.classList.add("version-1-7-2");
-    }
+    this.addSettingCssClasses();
     new Commands(this.app, this).registerCommands();
     registerOverviewCommands(this);
     this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));
@@ -8796,6 +8793,51 @@ var FolderNotesPlugin = class extends import_obsidian52.Plugin {
       this.handleOverviewBlock(source, el, ctx);
     });
   }
+  addSettingCssClasses() {
+    document.body.classList.add("folder-notes-plugin");
+    if (this.settings.hideFolderNote) {
+      document.body.classList.add("hide-folder-note");
+    }
+    if (this.settings.hideCollapsingIconForEmptyFolders) {
+      document.body.classList.add("fn-hide-empty-collapse-icon");
+    }
+    if (this.settings.hideFolderNoteNameInPath) {
+      document.body.classList.add("folder-note-hide-name-path");
+    }
+    if (this.settings.underlineFolder) {
+      document.body.classList.add("folder-note-underline");
+    }
+    if (this.settings.boldName) {
+      document.body.classList.add("folder-note-bold");
+    }
+    if (this.settings.cursiveName) {
+      document.body.classList.add("folder-note-cursive");
+    }
+    if (this.settings.boldNameInPath) {
+      document.body.classList.add("folder-note-bold-path");
+    }
+    if (this.settings.cursiveNameInPath) {
+      document.body.classList.add("folder-note-cursive-path");
+    }
+    if (this.settings.underlineFolderInPath) {
+      document.body.classList.add("folder-note-underline-path");
+    }
+    if (this.settings.stopWhitespaceCollapsing) {
+      document.body.classList.add("fn-whitespace-stop-collapsing");
+    }
+    if (this.settings.hideCollapsingIcon) {
+      document.body.classList.add("fn-hide-collapse-icon");
+    }
+    if (this.settings.ignoreAttachmentFolder) {
+      document.body.classList.add("fn-ignore-attachment-folder");
+    }
+    if (!this.settings.highlightFolder) {
+      document.body.classList.add("disable-folder-highlight");
+    }
+    if ((0, import_obsidian52.requireApiVersion)("1.7.2")) {
+      document.body.classList.add("version-1-7-2");
+    }
+  }
   onLayoutReady() {
     var _a, _b, _c;
     if (!this._loaded) {
@@ -8817,6 +8859,9 @@ var FolderNotesPlugin = class extends import_obsidian52.Plugin {
       this.handleFileExplorerClick(evt);
     }, true);
     this.registerDomEvent(document, "auxclick", (evt) => {
+      const rightClick = 2;
+      if (evt.button === rightClick)
+        return;
       this.handleFileExplorerClick(evt);
     }, true);
     const fileExplorerPlugin = this.app.internalPlugins.getEnabledPluginById("file-explorer");
@@ -9033,6 +9078,7 @@ var FolderNotesPlugin = class extends import_obsidian52.Plugin {
         if (attachmentFolder instanceof import_obsidian52.TFolder && folder.children.length <= threshold + 1) {
           addCSSClassToFileExplorerEl(folder.path, "fn-empty-folder", false, this);
           addCSSClassToFileExplorerEl(folder.path, "fn-has-attachment-folder", false, this);
+          addCSSClassToFileExplorerEl(folder.path, "fn-has-attachment-folder", true, this);
         }
         return folder.children.length <= threshold + 1;
       }

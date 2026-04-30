@@ -83,6 +83,12 @@
 }
 
 /* Editable name input styling - match native Obsidian input */
+.vault-cms-editable-name {
+	font-size: 1.2em;
+	font-weight: 600;
+	color: var(--text-normal);
+}
+
 .vault-cms-editable-name input.mod-text-input {
 	border: none;
 	background: transparent;
@@ -102,6 +108,30 @@
 	outline: none;
 	background: transparent;
 }
+
+/* Spacing between content types */
+.vault-cms-wizard .vault-cms-ct-block {
+	margin-top: 2.5rem;
+}
+
+.vault-cms-wizard .vault-cms-section-header + .vault-cms-ct-block {
+	margin-top: 0.5rem;
+}
+
+.vault-cms-wizard .vault-cms-section-desc {
+	margin-bottom: 24px;
+}
+
+/* Fix missing top border/spacing when settings are wrapped in slots */
+.vault-cms-wizard .vault-cms-attachment-extra-slot {
+	margin-bottom: 18px;
+}
+
+.vault-cms-wizard .vault-cms-attachment-extra-slot:not(:empty) > .setting-item {
+	border-top: 1px solid var(--background-modifier-border) !important;
+	padding-top: 18px !important;
+}
+
 
 /*
 
