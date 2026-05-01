@@ -26,11 +26,17 @@ program
   .allowExcessArguments(true)
   .argument('[target]', 'target directory')
   .option('-t, --template <name>', 'template to use (from vaultcms-presets)')
+  .option(
+    '--presets-repo <repo>',
+    'override the presets registry ("owner/repo" or "owner/repo@branch"). ' +
+      'Defaults to davidvkimball/vaultcms-presets, or VAULTCMS_PRESETS_REPO env var.'
+  )
   .action(async (target, options) => {
     try {
       console.log('🚀 Initializing Vault CMS Installer...');
 
-      const availableTemplates = await fetchTemplates();
+      const presetsRepo = options.presetsRepo || null;
+      const availableTemplates = await fetchTemplates(presetsRepo);
 
       let template = options.template;
       let targetPath = target;
@@ -65,7 +71,7 @@ program
       if (!targetPath) {
         // When template selected, use manifest install target and skip path prompt
         if (template) {
-          const manifest = await fetchPresetManifest();
+          const manifest = await fetchPresetManifest(presetsRepo);
           const presetConfig = manifest?.presets?.[template.toLowerCase()];
           targetPath = presetConfig?.installTarget || 'src/content';
         } else {
@@ -156,6 +162,7 @@ program
         targetDir,
         template,
         projectRoot: resolvedProjectRoot,
+        presetsRepo,
         log,
       });
 

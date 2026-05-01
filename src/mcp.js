@@ -45,10 +45,16 @@ const TOOLS = [
   {
     name: 'list_presets',
     description:
-      'List the preset templates available in the vaultcms-presets registry (e.g. starlight, slate, chiri). Returns names plus manifest metadata (display name, description, install target) when the manifest is available. Read-only.',
+      'List the preset templates available in the vaultcms-presets registry (e.g. starlight, slate, chiri). Returns names plus manifest metadata (display name, description, install target) when the manifest is available. Read-only. Defaults to davidvkimball/vaultcms-presets but supports community / private fork registries via the `source` argument or VAULTCMS_PRESETS_REPO env var.',
     inputSchema: {
       type: 'object',
-      properties: {},
+      properties: {
+        source: {
+          type: 'string',
+          description:
+            'Optional override for the presets registry. Format: "owner/repo" or "owner/repo@branch" (branch defaults to master). Use only with repos the user trusts — preset installs download and execute zip contents.',
+        },
+      },
     },
   },
   {
@@ -78,6 +84,11 @@ const TOOLS = [
           description:
             'Overwrite an existing Obsidian vault that lacks the vault-cms plugin. Off by default so an agent does not silently clobber a user\'s pre-plugin Obsidian config (themes, hotkeys, workspace, plugin list). Only set to true after explicit user confirmation.',
         },
+        presets_repo: {
+          type: 'string',
+          description:
+            'Optional override for the presets registry. Format: "owner/repo" or "owner/repo@branch". Defaults to davidvkimball/vaultcms-presets. Use only with repos the user trusts — preset installs download and execute zip contents on the user\'s machine.',
+        },
       },
       required: ['target_path'],
     },
@@ -99,7 +110,7 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
       case 'detect_project':
         return jsonResult(await handleDetectProject(args));
       case 'list_presets':
-        return jsonResult(await handleListPresets());
+        return jsonResult(await handleListPresets(args));
       case 'install_vaultcms':
         return jsonResult(await handleInstall(args));
       default:
@@ -117,8 +128,12 @@ async function handleDetectProject(args) {
   return await inspectProject(target);
 }
 
-async function handleListPresets() {
-  const [names, manifest] = await Promise.all([fetchTemplates(), fetchPresetManifest()]);
+async function handleListPresets(args = {}) {
+  const override = args.source || null;
+  const [names, manifest] = await Promise.all([
+    fetchTemplates(override),
+    fetchPresetManifest(override),
+  ]);
   const presets = names.map((name) => {
     const meta = manifest?.presets?.[name.toLowerCase()] || null;
     return {
@@ -129,10 +144,20 @@ async function handleListPresets() {
       theme: meta?.theme || null,
     };
   });
+  // Echo back the resolved source so the caller can confirm which registry
+  // they're pulling from (especially when using env var / override).
+  let resolved;
+  try {
+    resolved = require('./lib/registry').resolvePresetsRepo(override);
+  } catch {
+    resolved = null;
+  }
   return {
     presets,
     manifestAvailable: manifest != null,
-    source: 'https://github.com/davidvkimball/vaultcms-presets',
+    source: resolved
+      ? { repo: resolved.repo, branch: resolved.branch, isDefault: resolved.isDefault }
+      : { repo: 'davidvkimball/vaultcms-presets', branch: 'master', isDefault: true },
   };
 }
 
@@ -147,6 +172,7 @@ async function handleInstall(args) {
     targetDir,
     template: args.template || null,
     projectRoot: args.project_root ? path.resolve(args.project_root) : undefined,
+    presetsRepo: args.presets_repo || null,
     force: args.force === true,
     log: (msg) => logs.push(msg),
   });

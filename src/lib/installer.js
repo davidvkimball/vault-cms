@@ -11,7 +11,7 @@ const path = require('path');
 const AdmZip = require('adm-zip');
 
 const { findProjectRoot, detectObsidianVault, detectVaultCmsInstall } = require('./detection');
-const { downloadFile, PRESETS_ZIP, MAIN_ZIP } = require('./registry');
+const { downloadFile, resolvePresetsRepo, MAIN_ZIP } = require('./registry');
 
 /**
  * Install Vault CMS into `targetDir`. Resolves project root, downloads the
@@ -24,6 +24,9 @@ const { downloadFile, PRESETS_ZIP, MAIN_ZIP } = require('./registry');
  * @param {string} opts.targetDir         Absolute path where the vault config lands.
  * @param {string} [opts.template]        Optional preset name (e.g. "starlight").
  * @param {string} [opts.projectRoot]     Override project-root detection.
+ * @param {string} [opts.presetsRepo]     Override the presets registry source
+ *                                        ("owner/repo" or "owner/repo@branch").
+ *                                        Defaults to davidvkimball/vaultcms-presets.
  * @param {boolean} [opts.force]          Overwrite an existing Obsidian vault that
  *                                        lacks the vault-cms plugin. Off by default
  *                                        so an agent doesn't silently clobber a user's
@@ -35,6 +38,7 @@ async function installVaultCms(opts) {
   const targetDir = path.resolve(opts.targetDir);
   const template = opts.template || null;
   const force = opts.force === true;
+  const presetsRepo = opts.presetsRepo || null;
 
   await fs.ensureDir(targetDir);
 
@@ -63,8 +67,17 @@ async function installVaultCms(opts) {
 
   try {
     log(`📍 Target directory: ${targetDir}`);
+    let zipUrl;
+    if (template) {
+      const source = resolvePresetsRepo(presetsRepo);
+      zipUrl = source.zip;
+      if (!source.isDefault) {
+        log(`📦 Using custom presets repo: ${source.repo}@${source.branch}`);
+      }
+    } else {
+      zipUrl = MAIN_ZIP;
+    }
     log('📦 Downloading archive...');
-    const zipUrl = template ? PRESETS_ZIP : MAIN_ZIP;
     await downloadFile(zipUrl, tempZip);
 
     log('📂 Extracting files...');

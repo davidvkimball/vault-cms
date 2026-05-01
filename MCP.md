@@ -12,6 +12,18 @@
 
 `install_vaultcms` writes to disk. Agents should confirm with the user before invoking it.
 
+### Custom preset registries
+
+`list_presets` and `install_vaultcms` default to the official `davidvkimball/vaultcms-presets` registry but accept a custom repo via three converging paths (priority order):
+
+1. **MCP arg / CLI flag** — `list_presets({ source: "owner/repo" })`, `install_vaultcms({ ..., presets_repo: "owner/repo@branch" })`, or `npx create-vaultcms --presets-repo owner/repo`
+2. **Env var** — `VAULTCMS_PRESETS_REPO=owner/repo`
+3. **Default** — `davidvkimball/vaultcms-presets@master`
+
+Format: `owner/repo` or `owner/repo@branch`. Branch defaults to `master`.
+
+> **Trust note**: `install_vaultcms` downloads and extracts a zip from the chosen repo onto the user's machine. Only point at registries you trust. Agents should surface the resolved repo to the user before installing from a non-default source.
+
 ## Quick start
 
 The server speaks stdio. Most clients spawn it as a subprocess.
