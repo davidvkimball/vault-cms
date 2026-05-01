@@ -4,16 +4,20 @@
   "description": "Installer for Vault CMS",
   "main": "src/cli.js",
   "bin": {
-    "create-vaultcms": "src/cli.js"
+    "create-vaultcms": "src/cli.js",
+    "vaultcms-mcp": "src/mcp.js"
   },
   "files": [
     "src",
     "README.md",
     "_GUIDE.md",
+    "MCP.md",
     "LICENSE"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "mcp": "node src/mcp.js",
+    "test:smoke": "node scripts/smoke-test.js",
+    "test": "npm run test:smoke"
   },
   "repository": {
     "type": "git",
@@ -28,6 +32,7 @@
   },
   "homepage": "https://github.com/davidvkimball/vaultcms#readme",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
     "adm-zip": "^0.5.16",
     "commander": "^14.0.2",
     "fs-extra": "^11.3.3",
