@@ -82,6 +82,52 @@ async function detectVaultCmsInstall(projectRoot) {
 }
 
 /**
+ * Detect any existing Obsidian vault in the project — regardless of whether
+ * it has the vault-cms plugin. Used as a safety guard so install_vaultcms
+ * doesn't silently overwrite a user's pre-existing Obsidian config (themes,
+ * hotkeys, workspace state, plugin list).
+ *
+ * Checks (in order):
+ *   1. `<project>/.obsidian/`              — root install
+ *   2. `<project>/src/content/.obsidian/`  — typical install
+ *   3. `<project>/src/content/<collection>/.obsidian/`
+ *      — collection-scoped vaults, common for older Obsidian-authored sites
+ *        that predate the vault-cms plugin (e.g. one collection is the vault).
+ *
+ * Returns the path to the directory containing `.obsidian/`, or null.
+ */
+async function detectObsidianVault(projectRoot) {
+  const directCandidates = [
+    projectRoot,
+    path.join(projectRoot, 'src', 'content'),
+  ];
+  for (const candidate of directCandidates) {
+    if (await fs.pathExists(path.join(candidate, '.obsidian'))) {
+      return candidate;
+    }
+  }
+  // Collection-scoped fallback: scan immediate subfolders of src/content/.
+  // Limited depth + no recursion to avoid pulling in unrelated .obsidian dirs
+  // (e.g. inside node_modules or unrelated nested projects).
+  const contentDir = path.join(projectRoot, 'src', 'content');
+  if (await fs.pathExists(contentDir)) {
+    const entries = await fs.readdir(contentDir);
+    for (const entry of entries) {
+      if (entry.startsWith('.')) continue;
+      const collectionPath = path.join(contentDir, entry);
+      try {
+        const stat = await fs.stat(collectionPath);
+        if (!stat.isDirectory()) continue;
+        if (await fs.pathExists(path.join(collectionPath, '.obsidian'))) {
+          return collectionPath;
+        }
+      } catch { /* ignore */ }
+    }
+  }
+  return null;
+}
+
+/**
  * Scan src/pages/ for dynamic route files ([...slug].astro, [slug].astro)
  * and map them to content collection URL prefixes.
  */
@@ -183,6 +229,7 @@ async function inspectProject(targetPath) {
   const hasGit = await fs.pathExists(path.join(projectRoot, '.git'));
   const hasPackageJson = await fs.pathExists(path.join(projectRoot, 'package.json'));
   const vaultCmsInstallPath = await detectVaultCmsInstall(projectRoot);
+  const obsidianVaultPath = await detectObsidianVault(projectRoot);
 
   return {
     path: resolved,
@@ -196,6 +243,11 @@ async function inspectProject(targetPath) {
     routes,
     vaultCmsInstalled: vaultCmsInstallPath !== null,
     vaultCmsInstallPath,
+    // True when ANY Obsidian vault exists in the project — including older
+    // Obsidian-authored sites that predate the vault-cms plugin. Lets agents
+    // distinguish "fresh project" from "existing Obsidian setup we'd clobber".
+    obsidianVaultPresent: obsidianVaultPath !== null,
+    obsidianVaultPath,
   };
 }
 
@@ -208,5 +260,6 @@ module.exports = {
   detectAstroRoutes,
   detectPackageManager,
   detectVaultCmsInstall,
+  detectObsidianVault,
   inspectProject,
 };

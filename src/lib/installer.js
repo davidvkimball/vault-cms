@@ -10,7 +10,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const AdmZip = require('adm-zip');
 
-const { findProjectRoot } = require('./detection');
+const { findProjectRoot, detectObsidianVault, detectVaultCmsInstall } = require('./detection');
 const { downloadFile, PRESETS_ZIP, MAIN_ZIP } = require('./registry');
 
 /**
@@ -24,16 +24,39 @@ const { downloadFile, PRESETS_ZIP, MAIN_ZIP } = require('./registry');
  * @param {string} opts.targetDir         Absolute path where the vault config lands.
  * @param {string} [opts.template]        Optional preset name (e.g. "starlight").
  * @param {string} [opts.projectRoot]     Override project-root detection.
+ * @param {boolean} [opts.force]          Overwrite an existing Obsidian vault that
+ *                                        lacks the vault-cms plugin. Off by default
+ *                                        so an agent doesn't silently clobber a user's
+ *                                        pre-plugin Obsidian config.
  * @param {(msg: string) => void} [opts.log]  Progress logger.
  */
 async function installVaultCms(opts) {
   const log = opts.log || (() => {});
   const targetDir = path.resolve(opts.targetDir);
   const template = opts.template || null;
+  const force = opts.force === true;
 
   await fs.ensureDir(targetDir);
 
   const resolvedProjectRoot = path.resolve(opts.projectRoot || (await findProjectRoot(targetDir)));
+
+  // Safety guard: if the project already has an Obsidian vault but no vault-cms
+  // plugin, refuse unless the caller explicitly forces. Older Obsidian-authored
+  // sites (pre-vault-cms-plugin) would otherwise get their workspace, hotkeys,
+  // theme, and plugin list silently overwritten.
+  const existingObsidianVault = await detectObsidianVault(resolvedProjectRoot);
+  const existingVaultCms = await detectVaultCmsInstall(resolvedProjectRoot);
+  if (existingObsidianVault && !existingVaultCms && !force) {
+    const err = new Error(
+      `Existing Obsidian vault detected at "${existingObsidianVault}" without the vault-cms plugin. ` +
+      `Installing would overwrite the user's existing Obsidian configuration ` +
+      `(workspace, hotkeys, theme, plugin list). ` +
+      `Pass force=true to overwrite, or install the vault-cms plugin into the existing vault to upgrade in place.`
+    );
+    err.code = 'EXISTING_OBSIDIAN_VAULT';
+    err.existingVaultPath = existingObsidianVault;
+    throw err;
+  }
   const tempZip = path.join(targetDir, 'vaultcms-temp.zip');
   const extractDir = path.join(targetDir, '.vaultcms-temp-extract');
   const modified = [];

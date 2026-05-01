@@ -54,7 +54,7 @@ const TOOLS = [
   {
     name: 'install_vaultcms',
     description:
-      'Install Vault CMS into an Astro project. Downloads the vault config (and optionally a preset), copies _bases/ and .obsidian/, fixes paths, and updates .gitignore. This MUTATES the filesystem — confirm with the user before invoking. Returns a structured result describing the install.',
+      'Install Vault CMS into an Astro project. Downloads the vault config (and optionally a preset), copies _bases/ and .obsidian/, fixes paths, and updates .gitignore. This MUTATES the filesystem — confirm with the user before invoking. Refuses if an existing Obsidian vault is detected without the vault-cms plugin (passes pre-plugin user setups through unharmed); set force=true to override. Returns a structured result describing the install.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -72,6 +72,11 @@ const TOOLS = [
           type: 'string',
           description:
             'Optional override for the detected Astro project root. Use when the auto-detection picks the wrong ancestor.',
+        },
+        force: {
+          type: 'boolean',
+          description:
+            'Overwrite an existing Obsidian vault that lacks the vault-cms plugin. Off by default so an agent does not silently clobber a user\'s pre-plugin Obsidian config (themes, hotkeys, workspace, plugin list). Only set to true after explicit user confirmation.',
         },
       },
       required: ['target_path'],
@@ -142,6 +147,7 @@ async function handleInstall(args) {
     targetDir,
     template: args.template || null,
     projectRoot: args.project_root ? path.resolve(args.project_root) : undefined,
+    force: args.force === true,
     log: (msg) => logs.push(msg),
   });
 

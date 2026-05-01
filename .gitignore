@@ -12,6 +12,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# npm pack / publish build artifacts (regenerated on every publish; never commit)
+*.tgz
+*.tar.gz
+
 # OS files
 .DS_Store
 Thumbs.db
