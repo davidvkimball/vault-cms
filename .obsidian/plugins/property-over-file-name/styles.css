@@ -316,3 +316,8 @@
 .setting-group-heading:not(:has(+ .setting-item)) h3 {
 	border-bottom: 1px solid var(--background-modifier-border) !important;
 }
+
+/* Utility class for hiding elements via plugin logic */
+.pov-hidden {
+  display: none !important;
+}
