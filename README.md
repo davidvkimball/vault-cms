@@ -47,6 +47,10 @@ npx create-vaultcms
 
 To skip the prompt and set the template in one go (e.g. for scripts), use `npx create-vaultcms --template <name>`. See all presets at the [Presets Repo](https://github.com/davidvkimball/vaultcms-presets).
 
+### AI agents (MCP)
+
+This package also bundles an [MCP server](https://modelcontextprotocol.io) (`vaultcms-mcp`) so Claude Code, Cursor, Claude Desktop, and other agents can install Vault CMS for you through structured tool calls. Full setup and tool reference: [docs.vaultcms.org/guides/mcp-server/](https://docs.vaultcms.org/guides/mcp-server/).
+
 ## Deep Dive
 
 - **Documentation**: [docs.vaultcms.org](https://docs.vaultcms.org)

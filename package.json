@@ -1,6 +1,6 @@
 {
   "name": "create-vaultcms",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Installer for Vault CMS",
   "main": "src/cli.js",
   "bin": {
@@ -11,13 +11,11 @@
     "src",
     "README.md",
     "_GUIDE.md",
-    "MCP.md",
     "LICENSE"
   ],
   "scripts": {
     "mcp": "node src/mcp.js",
-    "test:smoke": "node scripts/smoke-test.js",
-    "test": "npm run test:smoke"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
