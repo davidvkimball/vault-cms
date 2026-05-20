@@ -129,7 +129,7 @@ __export(settings_schema_exports, {
   readCMSSettings: () => readCMSSettings
 });
 function readCMSSettings(config, pluginSettings) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z;
   const getConfig = (key) => {
     var _a2;
     return (_a2 = config == null ? void 0 : config.get) == null ? void 0 : _a2.call(config, key);
@@ -157,9 +157,10 @@ function readCMSSettings(config, pluginSettings) {
     showTextPreview: (_c = getConfig("showTextPreview")) != null ? _c : true,
     fallbackToContent: (_d = getConfig("fallbackToContent")) != null ? _d : true,
     richContentPreview: (_e = getConfig("richContentPreview")) != null ? _e : false,
-    truncatePreviewProperty: (_f = getConfig("truncatePreviewProperty")) != null ? _f : false,
-    descriptionMaxLength: (_g = getConfig("descriptionMaxLength")) != null ? _g : 500,
-    descriptionMaxLines: (_h = getConfig("descriptionMaxLines")) != null ? _h : 5,
+    richContentPreviewScroll: (_f = getConfig("richContentPreviewScroll")) != null ? _f : false,
+    truncatePreviewProperty: (_g = getConfig("truncatePreviewProperty")) != null ? _g : false,
+    descriptionMaxLength: (_h = getConfig("descriptionMaxLength")) != null ? _h : 500,
+    descriptionMaxLines: (_i = getConfig("descriptionMaxLines")) != null ? _i : 5,
     fallbackToEmbeds: (() => {
       const value = getConfig("fallbackToEmbeds");
       if (value === "always" || value === "if-empty" || value === "never") return value;
@@ -179,13 +180,13 @@ function readCMSSettings(config, pluginSettings) {
     propertyDisplay12: getProp("propertyDisplay12") || "",
     propertyDisplay13: getProp("propertyDisplay13") || "",
     propertyDisplay14: getProp("propertyDisplay14") || "",
-    propertyLayout12SideBySide: (_i = getConfig("propertyLayout12SideBySide")) != null ? _i : false,
-    propertyLayout34SideBySide: (_j = getConfig("propertyLayout34SideBySide")) != null ? _j : false,
-    propertyLayout56SideBySide: (_k = getConfig("propertyLayout56SideBySide")) != null ? _k : false,
-    propertyLayout78SideBySide: (_l = getConfig("propertyLayout78SideBySide")) != null ? _l : false,
-    propertyLayout910SideBySide: (_m = getConfig("propertyLayout910SideBySide")) != null ? _m : false,
-    propertyLayout1112SideBySide: (_n = getConfig("propertyLayout1112SideBySide")) != null ? _n : false,
-    propertyLayout1314SideBySide: (_o = getConfig("propertyLayout1314SideBySide")) != null ? _o : false,
+    propertyLayout12SideBySide: (_j = getConfig("propertyLayout12SideBySide")) != null ? _j : false,
+    propertyLayout34SideBySide: (_k = getConfig("propertyLayout34SideBySide")) != null ? _k : false,
+    propertyLayout56SideBySide: (_l = getConfig("propertyLayout56SideBySide")) != null ? _l : false,
+    propertyLayout78SideBySide: (_m = getConfig("propertyLayout78SideBySide")) != null ? _m : false,
+    propertyLayout910SideBySide: (_n = getConfig("propertyLayout910SideBySide")) != null ? _n : false,
+    propertyLayout1112SideBySide: (_o = getConfig("propertyLayout1112SideBySide")) != null ? _o : false,
+    propertyLayout1314SideBySide: (_p = getConfig("propertyLayout1314SideBySide")) != null ? _p : false,
     propertyGroup1Position: getConfig("propertyGroup1Position") || "bottom",
     propertyGroup2Position: getConfig("propertyGroup2Position") || "bottom",
     propertyGroup3Position: getConfig("propertyGroup3Position") || "bottom",
@@ -196,19 +197,19 @@ function readCMSSettings(config, pluginSettings) {
     imageFormat: getConfig("imageFormat") || "thumbnail",
     imagePosition: getConfig("imagePosition") || "right",
     propertyLabels: getConfig("propertyLabels") || "hide",
-    propertyDisplayMaxLength: (_p = getConfig("propertyDisplayMaxLength")) != null ? _p : 0,
-    showDraftStatus: (_q = getConfig("showDraftStatus")) != null ? _q : false,
+    propertyDisplayMaxLength: (_q = getConfig("propertyDisplayMaxLength")) != null ? _q : 0,
+    showDraftStatus: (_r = getConfig("showDraftStatus")) != null ? _r : false,
     draftStatusProperty: getProp("draftStatusProperty") || "",
-    draftStatusReverse: (_r = getConfig("draftStatusReverse")) != null ? _r : false,
-    draftStatusUseFilenamePrefix: (_s = getConfig("draftStatusUseFilenamePrefix")) != null ? _s : false,
-    showTags: (_t = getConfig("showTags")) != null ? _t : false,
+    draftStatusReverse: (_s = getConfig("draftStatusReverse")) != null ? _s : false,
+    draftStatusUseFilenamePrefix: (_t = getConfig("draftStatusUseFilenamePrefix")) != null ? _t : false,
+    showTags: (_u = getConfig("showTags")) != null ? _u : false,
     tagsProperty: getProp("tagsProperty") || "",
-    maxTagsToShow: (_u = getConfig("maxTagsToShow")) != null ? _u : 3,
-    customizeNewButton: (_v = getConfig("customizeNewButton")) != null ? _v : false,
+    maxTagsToShow: (_v = getConfig("maxTagsToShow")) != null ? _v : 3,
+    customizeNewButton: (_w = getConfig("customizeNewButton")) != null ? _w : false,
     newNoteLocation: getConfig("newNoteLocation") || "",
-    hideQuickEditIcon: (_w = getConfig("hideQuickEditIcon")) != null ? _w : false,
-    cardSize: (_x = getConfig("cardSize")) != null ? _x : 250,
-    imageAspectRatio: (_y = getConfig("imageAspectRatio")) != null ? _y : 0.55
+    hideQuickEditIcon: (_x = getConfig("hideQuickEditIcon")) != null ? _x : false,
+    cardSize: (_y = getConfig("cardSize")) != null ? _y : 250,
+    imageAspectRatio: (_z = getConfig("imageAspectRatio")) != null ? _z : 0.55
   };
 }
 function getPropItems(displayName, key) {
@@ -262,6 +263,7 @@ function getCMSViewOptions() {
         ...getPropItems("Text preview property", "descriptionProperty"),
         { type: "toggle", displayName: "Use note content if text preview property unavailable", key: "fallbackToContent", default: true },
         { type: "toggle", displayName: "Render preview as Markdown", key: "richContentPreview", default: false },
+        { type: "toggle", displayName: "Scroll Markdown preview when it overflows", key: "richContentPreviewScroll", default: false, showWhen: { key: "richContentPreview", value: true } },
         { type: "toggle", displayName: "Truncate preview property", key: "truncatePreviewProperty", default: false },
         { type: "slider", displayName: "Description max length (when truncation is on)", key: "descriptionMaxLength", min: 50, max: 2e3, step: 50, default: 500, showWhen: { key: "truncatePreviewProperty", value: true } },
         { type: "slider", displayName: "Description max lines", key: "descriptionMaxLines", min: 1, max: 20, step: 1, default: 5 }
@@ -3121,6 +3123,9 @@ var SharedCardRenderer = class {
     const isRichContent = settings.richContentPreview && card.snippetSource === "content";
     if (isRichContent) {
       el.addClass("card-text-preview-rich", "markdown-rendered");
+      if (settings.richContentPreviewScroll) {
+        el.addClass("card-text-preview-rich-scroll");
+      }
       const component = new import_obsidian11.Component();
       component.load();
       this.markdownComponents.push(component);

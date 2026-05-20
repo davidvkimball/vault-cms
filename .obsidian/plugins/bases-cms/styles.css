@@ -767,12 +767,27 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
 	overflow: hidden;
 }
 
+/* Scroll variant: keep the height clamp but let the user scroll the preview
+   instead of hiding the overflow. Set by the renderer when the
+   `richContentPreviewScroll` setting is on. */
+.bases-cms .card-text-preview.card-text-preview-rich.card-text-preview-rich-scroll {
+	overflow: auto;
+}
+
 /* Soft fade at the clamp — but only when there's actually more content
    below. The renderer toggles `.has-overflow` based on a ResizeObserver so
    short notes don't get a fade applied to their own visible content. */
 .bases-cms .card-text-preview-rich.has-overflow {
 	-webkit-mask-image: linear-gradient(to bottom, black calc(100% - 1.5em), transparent);
 	mask-image: linear-gradient(to bottom, black calc(100% - 1.5em), transparent);
+}
+
+/* Suppress the fade in scroll mode — the user can see all content by
+   scrolling, so the "more below" hint isn't needed and the gradient would
+   just visually confuse with the scrollbar. */
+.bases-cms .card-text-preview-rich.card-text-preview-rich-scroll.has-overflow {
+	-webkit-mask-image: none;
+	mask-image: none;
 }
 
 .bases-cms .card-text-preview-rich > :first-child {
@@ -830,6 +845,19 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
 	font-family: var(--font-monospace, monospace);
 	font-size: var(--code-size, 0.85em);
 	color: var(--code-normal, var(--text-normal));
+}
+
+/* Prism's `.token.tag` (XML/HTML element names) and `.token.attr-name`
+   collide with Obsidian's `.tag` vault-tag styling, which would otherwise
+   render every <Element> as a pill-shaped chip inside code blocks. Strip
+   the pill chrome here while keeping Prism's intended syntax coloring. */
+.bases-cms .card-text-preview-rich pre .token.tag,
+.bases-cms .card-text-preview-rich pre .token.attr-name {
+	background: transparent;
+	border: none;
+	padding: 0;
+	border-radius: 0;
+	line-height: inherit;
 }
 
 /* Inline code (not inside a <pre>) gets its own small pill so it stands out

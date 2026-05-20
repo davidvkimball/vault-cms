@@ -6,6 +6,7 @@
   "ignoreDiacritics": true,
   "ignoreArabicDiacritics": false,
   "indexedFileTypes": [],
+  "indexFilesWithoutExtension": false,
   "displayTitle": "title",
   "PDFIndexing": false,
   "officeIndexing": false,

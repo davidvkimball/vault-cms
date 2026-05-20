@@ -1,7 +1,7 @@
 {
 	"id": "bases-cms",
 	"name": "Bases CMS",
-	"version": "0.5.7",
+	"version": "0.5.8",
 	"minAppVersion": "1.11.0",
 	"description": "Manage your notes in bases like a content management system.",
 	"author": "David V. Kimball",
